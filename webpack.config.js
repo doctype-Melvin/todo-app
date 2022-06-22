@@ -22,7 +22,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             hash: true,
             template: './src/index.html',
-            filename: './dist/index.html'
+            filename: 'index.html'
         })
     ],
     module: {
