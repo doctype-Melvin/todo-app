@@ -61,4 +61,4 @@ function addProjectTask(title, description, date, priority, id){
     oldTasks.push(newTask);
 }
 
-//addProjectTask('Bookstore', 'return book', 'today', 'high')
+//Next: Access the todo array to push new tasks
