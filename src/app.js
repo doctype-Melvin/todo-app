@@ -55,10 +55,6 @@ function addElement(el, title, description, date, priority, id) {
     }
 }
 
-// addElement('project', 'Expedition', 'Antarctica');
-// addElement('task', 'Cut grass', 'Backyard');
-
-
 //Local storage is split up into [projects] and [tasks] (top level arrays)
 //New projects will be pushed to the [projects] (new tasks outside of a project go into [tasks] respectively)
 //Since it's an array, all array-methods are available
