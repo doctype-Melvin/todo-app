@@ -84,3 +84,5 @@ const updateTasks = (title, description, date, priority, id) => {
     localStorage.setObj('tasks', oldTasksData)
 
 }
+
+export {makeProject, makeTask, updateTasks, updateProjectTask, addElement}
