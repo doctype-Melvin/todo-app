@@ -8,7 +8,23 @@
 </head>
 <body>
     <div id="wrapper">
-        <div class="container">The App</div>
+        <div class="container">
+            <div class="sidebar">
+                <button class="newTask" id="task" >Add Task</button>
+                <button class="newProject" id="project">Add Project</button>
+            </div>
+            <div class="main">Main</div>
+        </div>
+        <div class="projectForm">
+            <form>
+                <label for="pTitle">Title
+                    <input type="text" name="pTitle" id="pTitle" placeholder="ex. Yardwork">
+                </label>
+                <label for="pDescription">Description
+                    <input type="text" name="pDescription", id="pDescription" placeholder="ex. prepare outdoor season">
+                </label>
+            </form>
+        </div>
     </div>
 </body>
 </html>

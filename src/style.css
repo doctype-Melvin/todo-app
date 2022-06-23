@@ -7,3 +7,36 @@ html, body {
     padding: 0;
     margin: 0;
 }
+
+#wrapper {
+    height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template-areas: 
+    "sidebar"
+    "main";
+}
+
+.sidebar {
+    grid-area: sidebar;
+    display: flex;
+    justify-content: space-around;
+}
+
+.main {
+    grid-area: main;
+}
+
+.projectForm {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+}

@@ -55,10 +55,32 @@ function addElement(el, title, description, date, priority, id) {
     }
 }
 
-function addProjectTask(title, description, date, priority, id){
-    let oldTasks = JSON.parse(localStorage.getItem('projects'))[0].toDo;
-    let newTask = makeTask(title, description, date, priority, id);
-    oldTasks.push(newTask);
+// addElement('project', 'Expedition', 'Antarctica');
+// addElement('task', 'Cut grass', 'Backyard');
+
+
+//Local storage is split up into [projects] and [tasks] (top level arrays)
+//New projects will be pushed to the [projects] (new tasks outside of a project go into [tasks] respectively)
+//Since it's an array, all array-methods are available
+//To update the top level arrays, first use the getObj method to access the desired array
+//Second use the setObj method to update the given array with the modified array 
+
+//To update the nested [toDo], first store the current storage data in a variable
+//The variable now holds the array
+//Access the array item's [toDo] and add the desired task (by index or push())
+//Reset the local storage [projects] via setObj method
+
+const updateProjectTask = (i, title, description, date, priority, id) => {
+let oldProjectData = localStorage.getObj('projects');
+let newProjectTask = makeTask(title, description, date, priority, id);
+oldProjectData[i].toDo.push(newProjectTask);
+localStorage.setObj('projects', oldProjectData)
 }
 
-//Next: Access the todo array to push new tasks
+const updateTasks = (title, description, date, priority, id) => {
+    let oldTasksData = localStorage.getObj('tasks');
+    let newTasksData = makeTask(title, description, date, priority, id);
+    oldTasksData.push(newTasksData);
+    localStorage.setObj('tasks', oldTasksData)
+
+}
