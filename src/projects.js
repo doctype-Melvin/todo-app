@@ -1,9 +1,7 @@
 import { addElement } from "./app";
-//Buttons to open corresponding modal
-let newTaskBtn = document.querySelector('.newTask');
+//Add Project Button
 let newProjectBtn = document.querySelector('.newProject');
 
-//Projects
 //Form modal and input fields
 let projectForm = document.querySelector('.projectForm')
 const proForm = document.querySelector('#proForm');
@@ -22,14 +20,13 @@ const closeModal = () => {
 
 //Opens Project form modal and calls addElement function with input values
 //which are pushed to local storage
-newProjectBtn.addEventListener('click', (e) => {
+newProjectBtn.addEventListener('click', () => {
     projectForm.style.display = 'flex';
     proForm.reset()
-    addProjectBtn.addEventListener('click', () => {
-        addElement(e.target.id, pTitle.value, pDescription.value);
-    })
     closeModal()
 });
+addProjectBtn.addEventListener('click', () => addElement('project', pTitle.value, pDescription.value))
+
 
 proForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -37,3 +34,5 @@ proForm.addEventListener('submit', (e) => {
 })
 
 //Next: create miscellaneous tasks in local storage
+
+export {closeModal}
