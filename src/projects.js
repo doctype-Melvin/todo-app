@@ -25,14 +25,16 @@ newProjectBtn.addEventListener('click', () => {
     proForm.reset()
     closeModal()
 });
+
+//Submits form and creates object
 addProjectBtn.addEventListener('click', () => addElement('project', pTitle.value, pDescription.value))
 
-
+//Prevents reload on submit and closes modal
 proForm.addEventListener('submit', (e) => {
     e.preventDefault();
     projectForm.style.display = 'none'
 })
 
-//Next: create miscellaneous tasks in local storage
+//Next: Read stored objects
 
 export {closeModal}
