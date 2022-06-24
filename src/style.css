@@ -27,6 +27,10 @@ html, body {
 
 .main {
     grid-area: main;
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(50px, 100px));
 }
 
 .projectForm, .taskForm {
@@ -58,3 +62,7 @@ html, body {
     margin: 10px auto;
 }
 
+.tContainer {
+    display: flex;
+    justify-content: space-between;
+}

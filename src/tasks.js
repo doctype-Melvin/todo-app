@@ -1,5 +1,6 @@
 import { addElement } from "./app";
 import { closeModal } from "./projects";
+import { appendTasks, removeDivs } from "./read";
 
 //Add task button
 let newTaskBtn = document.querySelector('.newTask');
@@ -33,5 +34,7 @@ addTaskBtn.addEventListener('click', () => addElement('task', title.value, descr
 //Prevents reload on submit and closes modal
 tForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    taskForm.style.display = 'none'
+    taskForm.style.display = 'none';
+    removeDivs()
+    appendTasks();
 })
