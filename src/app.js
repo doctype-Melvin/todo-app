@@ -1,3 +1,5 @@
+import icon from './icons8-menü-30.png';
+
 //Adds methods to local storage to store objects
 Storage.prototype.setObj = function (key, value) {
     this.setItem(key, JSON.stringify(value));
@@ -54,6 +56,12 @@ function addElement(el, title, description, date, priority, id) {
             localStorage.setObj('projects', oldProjects) //set the updated array in local storage
     }
 }
+
+//Add burger menu icon
+const burgerIcon = new Image();
+burgerIcon.src = icon;
+document.querySelector('.openSb').append(burgerIcon)
+
 
 //Local storage is split up into [projects] and [tasks] (top level arrays)
 //New projects will be pushed to the [projects] (new tasks outside of a project go into [tasks] respectively)
