@@ -22,7 +22,32 @@ html, body {
 .sidebar {
     grid-area: sidebar;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding: 10px 0;
+    background-color: #fefefe;
+}
+
+.sidebar .closeBtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 30px;
+    margin-left: 50px;
+}
+
+.openSb {
+    font-size: 30px;
+    cursor: pointer;
+    padding: 10px 15px;
+
 }
 
 .main {
@@ -31,6 +56,8 @@ html, body {
     height: 100vh;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fit, minmax(50px, 100px));
+    transition: margin-left .3s;
+    padding: 20px;
 }
 
 .projectForm, .taskForm {
@@ -65,4 +92,13 @@ html, body {
 .tContainer {
     display: flex;
     justify-content: space-between;
+}
+
+.newButtons, .tab {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.newButtons:hover, .tab:hover{
+    cursor: pointer;
 }

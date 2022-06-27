@@ -1,5 +1,5 @@
 import './app'
-//Fn takes obj and creates array of arrays
+//Fn takes obj and creates array of task details
 const splitObj = (obj) => {
     let result = [];
     result.push([obj.title, obj.description, obj.date, obj.priority])
@@ -34,11 +34,11 @@ const makeElement = ([title, description, date, priority]) => {
 }
 
 //Loop over the group tasks array and create container for each array (task)
-const appendTasks = () => //Bad: Creates duplicates with each call
+const appendTasks = () => {//Bad: Creates duplicates with each call
 (groupTasks() !== undefined) ? 
 groupTasks().map(array => document.querySelector('.main').append(makeElement(...array))) :
 console.log('waiting for tasks');
-
+}
 
 const removeDivs = () => {
     const main = document.getElementById('main');
@@ -46,4 +46,16 @@ const removeDivs = () => {
         main.removeChild(main.lastChild)
     }
 }
+
+const openSidebar = document.querySelector('.openSb')
+openSidebar.addEventListener('click', () => {
+    document.querySelector('.sidebar').style.width = '250px';
+    document.querySelector('.main').style.marginLeft = '250px'
+});
+
+const closeSidebar = document.querySelector('.closeBtn');
+closeSidebar.addEventListener('click', () => {
+    document.querySelector('.sidebar').style.width = '0';
+    document.querySelector('.main').style.marginLeft = '0'
+});
 export {appendTasks, removeDivs}
