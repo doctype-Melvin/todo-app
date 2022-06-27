@@ -1,4 +1,5 @@
 import './app'
+
 //Fn takes obj and creates array of task details
 const splitObj = (obj) => {
     let result = [];
@@ -47,15 +48,4 @@ const removeDivs = () => {
     }
 }
 
-const openSidebar = document.querySelector('.openSb')
-openSidebar.addEventListener('click', () => {
-    document.querySelector('.sidebar').style.width = '250px';
-    document.querySelector('.main').style.marginLeft = '250px'
-});
-
-const closeSidebar = document.querySelector('.closeBtn');
-closeSidebar.addEventListener('click', () => {
-    document.querySelector('.sidebar').style.width = '0';
-    document.querySelector('.main').style.marginLeft = '0'
-});
 export {appendTasks, removeDivs}

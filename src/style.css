@@ -39,14 +39,14 @@ html, body {
     position: absolute;
     top: 0;
     right: 25px;
-    font-size: 30px;
+    font-size: 35px;
     margin-left: 50px;
 }
 
 .openSb {
     font-size: 30px;
     cursor: pointer;
-    padding: 10px 15px;
+    padding: 5px 5px;
 
 }
 
@@ -57,7 +57,7 @@ html, body {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fit, minmax(50px, 100px));
     transition: margin-left .3s;
-    padding: 20px;
+    padding: 5px;
 }
 
 .projectForm, .taskForm {
@@ -101,4 +101,8 @@ html, body {
 
 .newButtons:hover, .tab:hover{
     cursor: pointer;
+}
+
+.projectList > li {
+    color: rgba(0, 0, 0, 0.6);
 }

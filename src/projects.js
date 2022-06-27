@@ -27,14 +27,29 @@ newProjectBtn.addEventListener('click', () => {
 });
 
 //Submits form and creates object
-addProjectBtn.addEventListener('click', () => addElement('project', pTitle.value, pDescription.value))
+addProjectBtn.addEventListener('click', () => {
+    addElement('project', pTitle.value, pDescription.value);
+})
 
 //Prevents reload on submit and closes modal
 proForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    projectForm.style.display = 'none'
+    projectForm.style.display = 'none';
 })
 
-//Next: Read stored objects
+const projectList = document.querySelector('.projectList');
+let projects = localStorage.getObj('projects');
+
+const makeLI = (title) => {
+    const item = document.createElement('li');
+    item.textContent = title;
+    return {
+        item
+    }
+}
+
+for(let i = 0; i < projects.length; i++) {
+    projectList.append(makeLI(projects[i].title))
+}
 
 export {closeModal}

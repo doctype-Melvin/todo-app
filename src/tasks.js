@@ -1,5 +1,4 @@
-import { addElement } from "./app";
-import { closeModal } from "./projects";
+import { addElement, closeSb } from "./app";
 import { appendTasks, removeDivs } from "./read";
 
 //Add task button
@@ -38,3 +37,12 @@ tForm.addEventListener('submit', (e) => {
     removeDivs()
     appendTasks();
 })
+
+//Click on misc tab closes sidebar and shows misc tasks
+const miscTab = document.getElementById('misc');
+miscTab.addEventListener('click', () => {
+    closeSb();
+    removeDivs();
+    appendTasks();
+})
+

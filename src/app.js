@@ -1,4 +1,5 @@
 import icon from './icons8-menü-30.png';
+import { appendTasks } from './read';
 
 //Adds methods to local storage to store objects
 Storage.prototype.setObj = function (key, value) {
@@ -33,6 +34,13 @@ const makeProject = (title, description) => {
     }
 }
 
+//Render localStorage on load
+const renderStorage = (() => {
+    if(localStorage.length > 0){
+        appendTasks()
+    }
+})()
+
 //Create new task or project element and
 //push it to the corresponding local storage slot
 function addElement(el, title, description, date, priority, id) {
@@ -60,7 +68,23 @@ function addElement(el, title, description, date, priority, id) {
 //Add burger menu icon
 const burgerIcon = new Image();
 burgerIcon.src = icon;
-document.querySelector('.openSb').append(burgerIcon)
+document.querySelector('.openSb').append(burgerIcon);
+
+//Open sidebar
+const openSidebar = document.querySelector('.openSb');
+function openSb(){
+    document.querySelector('.sidebar').style.width = '100vw';
+    document.querySelector('.main').style.marginLeft = '100vw';
+}
+openSidebar.addEventListener('click', () => openSb());
+
+//Close sidebar
+const closeSidebar = document.querySelector('.closeBtn');
+function closeSb(){
+    document.querySelector('.sidebar').style.width = '0';
+    document.querySelector('.main').style.marginLeft = '0'
+}
+closeSidebar.addEventListener('click', () => closeSb());
 
 
 //Local storage is split up into [projects] and [tasks] (top level arrays)
@@ -89,4 +113,12 @@ const updateTasks = (title, description, date, priority, id) => {
 
 }
 
-export {makeProject, makeTask, updateTasks, updateProjectTask, addElement}
+export {
+    makeProject, 
+    makeTask, 
+    updateTasks, 
+    updateProjectTask, 
+    addElement, 
+    openSb, 
+    closeSb
+}
