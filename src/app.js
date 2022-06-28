@@ -1,6 +1,9 @@
 import icon from './icons8-menü-30.png';
 import { appendTasks } from './read';
 
+/////Clear Storage Button
+document.getElementById('clearBtn').addEventListener('click', () => localStorage.clear())
+
 //Adds methods to local storage to store objects
 Storage.prototype.setObj = function (key, value) {
     this.setItem(key, JSON.stringify(value));

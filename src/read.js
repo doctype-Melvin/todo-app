@@ -1,4 +1,6 @@
 import './app'
+/////This module reads misc tasks from task array in local storage and 
+////renders tasks to the main div
 
 //Fn takes obj and creates array of task details
 const splitObj = (obj) => {

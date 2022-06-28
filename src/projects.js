@@ -1,4 +1,4 @@
-import { addElement } from "./app";
+import { addElement, closeSb, makeTask } from "./app";
 //Add Project Button
 let newProjectBtn = document.querySelector('.newProject');
 
@@ -7,7 +7,10 @@ let projectForm = document.querySelector('.projectForm')
 const proForm = document.querySelector('#proForm');
 let pTitle = document.querySelector('#pTitle');
 let pDescription = document.querySelector('#pDescription');
-const addProjectBtn = document.querySelector('.addProject')
+const addProjectBtn = document.querySelector('.addProject');
+
+//All list items
+let listItems = document.querySelectorAll('.listItem');
 
 //Closes form modal
 const closeModal = () => {
@@ -29,7 +32,8 @@ newProjectBtn.addEventListener('click', () => {
 //Submits form and creates object
 addProjectBtn.addEventListener('click', () => {
     addElement('project', pTitle.value, pDescription.value);
-    makeLi()
+    makeLi();
+    itemsListen()
 })
 
 //Prevents reload on submit and closes modal
@@ -42,11 +46,66 @@ proForm.addEventListener('submit', (e) => {
 const makeLi = () => {
     let projects = localStorage.getObj('projects');
     if(projects === null) return
-    let str = '<ul class="listItem">';
-        projects.forEach(el => str += '<li>' + el.title + '</li>');
+    let str = '<ul>';
+        projects.forEach(el => str += '<li class="listItem">' + el.title + '</li>');
         str += '</ul>';
 return document.getElementById('projects').innerHTML = 'Projects' + str;
 }
-//Adds projects list to sidebar on page load
-window.onload = makeLi()
+
+//Adds listeners to list items (project list)
+const itemsListen = () => {
+if(localStorage.getObj('projects') === null) return
+[...document.querySelectorAll('.listItem')]
+.map(item => item.addEventListener('click', (e) => {
+    lookupTasks(e.target.textContent);
+    createTab(e.target.textContent);
+    closeSb();
+}))
+}
+
+//Looks up the clicked projects to do list
+const lookupTasks = (input) => {
+    if(localStorage.getObj('projects') === null) return
+    let obj = localStorage.getObj('projects').filter(item => item.title === input);
+    return obj[0].toDo
+}
+
+//Render project and tasks 
+const createTab = (input) => {
+    if (input == undefined) return
+   let tabSrc = localStorage.getObj('projects').filter(item => item.title === input);
+   let tabTitle = tabSrc[0].title;
+   let tabDescr = tabSrc[0].description;
+   removeTab()
+   document.querySelector('.main').append(makeProjectContainer(tabTitle, tabDescr))
+}
+
+//Remove tabs
+const removeTab = () => {
+    const main = document.getElementById('main');
+    while (main.firstChild) {
+        main.removeChild(main.lastChild)
+    }
+}
+
+//Create container for project title and description
+const makeProjectContainer = (pTitle, pDescription) => {
+    let container = document.createElement('div');
+    container.classList.add('proContainer');
+        let title = document.createElement('div');
+        title.classList.add('proTitle');
+        title.textContent = pTitle;
+            let description = document.createElement('div');
+            description.classList.add('proDescription');
+            description.textContent = pDescription;
+                container.append(title, description);
+    return container
+}
+
+//Adds projects list to sidebar and makes items clickable on page load
+(() => {
+    makeLi();
+    itemsListen();
+    createTab()
+})()
 export {closeModal}
