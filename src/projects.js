@@ -1,4 +1,6 @@
 import { addElement, closeSb, makeTask } from "./app";
+import { makeElement } from "./read";
+import './tasks'
 //Add Project Button
 let newProjectBtn = document.querySelector('.newProject');
 
@@ -53,10 +55,12 @@ return document.getElementById('projects').innerHTML = 'Projects' + str;
 }
 
 //Adds listeners to list items (project list)
+let currentProject
 const itemsListen = () => {
 if(localStorage.getObj('projects') === null) return
 [...document.querySelectorAll('.listItem')]
 .map(item => item.addEventListener('click', (e) => {
+    currentProject = e.target.textContent
     lookupTasks(e.target.textContent);
     createTab(e.target.textContent);
     closeSb();
@@ -76,8 +80,9 @@ const createTab = (input) => {
    let tabSrc = localStorage.getObj('projects').filter(item => item.title === input);
    let tabTitle = tabSrc[0].title;
    let tabDescr = tabSrc[0].description;
+   let tabList = tabSrc[0].toDo
    removeTab()
-   document.querySelector('.main').append(makeProjectContainer(tabTitle, tabDescr))
+   document.querySelector('.main').append(makeProjectContainer(tabTitle, tabDescr, tabList))
 }
 
 //Remove tabs
@@ -89,7 +94,7 @@ const removeTab = () => {
 }
 
 //Create container for project title and description
-const makeProjectContainer = (pTitle, pDescription) => {
+const makeProjectContainer = (pTitle, pDescription, list) => {
     let container = document.createElement('div');
     container.classList.add('proContainer');
         let title = document.createElement('div');
@@ -98,8 +103,41 @@ const makeProjectContainer = (pTitle, pDescription) => {
             let description = document.createElement('div');
             description.classList.add('proDescription');
             description.textContent = pDescription;
-                container.append(title, description);
+                let toDoList = makeElement(list);
+                    let addBtn = document.createElement('button')
+                    addBtn.textContent = 'Add Task';
+                    addBtn.addEventListener('click', () => openTaskForm())
+                container.append(title, description, addBtn, toDoList);
     return container
+}
+
+const taskForm = document.querySelector('.taskForm');
+const tForm = document.querySelector('#tForm');
+const title = document.querySelector('#tTitle');
+const description = document.querySelector('#tDescription');
+const date = document.querySelector('#tDate');
+const priority = document.querySelectorAll('.radio');
+const addTaskBtn = document.querySelector('.addTask');
+
+const openTaskForm = () => {
+    taskForm.style.display = 'block';
+    tForm.reset();
+    window.onclick = (e) => {
+        if (e.target == taskForm) {
+            taskForm.style.display = 'none'
+        }
+    }
+}
+
+let prio = ''
+priority.forEach(opt => opt.addEventListener('change', (e) => prio = (e.target.value)));
+
+//Push new task to project array
+//////>>>> Needs to update the array in local storage
+addTaskBtn.addEventListener('click', () => pushToDo(currentProject))
+const pushToDo = (input, title, description, date, prio) => {
+    lookupTasks(input).push(title, description, date, prio)
+    console.log(lookupTasks(input))
 }
 
 //Adds projects list to sidebar and makes items clickable on page load

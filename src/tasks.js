@@ -45,4 +45,3 @@ miscTab.addEventListener('click', () => {
     removeDivs();
     appendTasks();
 })
-
