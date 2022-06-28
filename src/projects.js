@@ -29,6 +29,7 @@ newProjectBtn.addEventListener('click', () => {
 //Submits form and creates object
 addProjectBtn.addEventListener('click', () => {
     addElement('project', pTitle.value, pDescription.value);
+    makeLi()
 })
 
 //Prevents reload on submit and closes modal
@@ -37,19 +38,15 @@ proForm.addEventListener('submit', (e) => {
     projectForm.style.display = 'none';
 })
 
-const projectList = document.querySelector('.projectList');
-let projects = localStorage.getObj('projects');
-
-const makeLI = (title) => {
-    const item = document.createElement('li');
-    item.textContent = title;
-    return {
-        item
-    }
+//Creates list items from projects array
+const makeLi = () => {
+    let projects = localStorage.getObj('projects');
+    if(projects === null) return
+    let str = '<ul class="listItem">';
+        projects.forEach(el => str += '<li>' + el.title + '</li>');
+        str += '</ul>';
+return document.getElementById('projects').innerHTML = 'Projects' + str;
 }
-
-for(let i = 0; i < projects.length; i++) {
-    projectList.append(makeLI(projects[i].title))
-}
-
+//Adds projects list to sidebar on page load
+window.onload = makeLi()
 export {closeModal}
