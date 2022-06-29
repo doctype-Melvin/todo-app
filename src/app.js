@@ -1,5 +1,6 @@
 import icon from './icons8-menü-30.png';
-import { appendTasks } from './read';
+
+import { appendTasks, makeElement } from './read';
 
 /////Clear Storage Button
 document.getElementById('clearBtn').addEventListener('click', () => localStorage.clear())
@@ -65,7 +66,10 @@ function addElement(el, title, description, date, priority, id) {
     let oldProjects = localStorage.getObj('projects'); //Take old array
         oldProjects.push(newProject); //and push new task
             localStorage.setObj('projects', oldProjects) //set the updated array in local storage
-    }
+}else if (el !== 'tasks' && el !== 'projects' || el == ''){
+    console.log(el);
+   
+}
 }
 
 //Add burger menu icon

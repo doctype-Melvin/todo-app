@@ -1,9 +1,10 @@
 import { addElement, closeSb } from "./app";
+
 import { appendTasks, removeDivs } from "./read";
 
 //Add task button
 let newTaskBtn = document.querySelector('.newTask');
-
+//window.addEventListener('click', (e) => console.log(e.target))
 const taskForm = document.querySelector('.taskForm');
 const tForm = document.querySelector('#tForm');
 const title = document.querySelector('#tTitle');
@@ -14,6 +15,7 @@ const addTaskBtn = document.querySelector('.addTask');
 
 
 newTaskBtn.addEventListener('click', () => {
+    
     taskForm.style.display = 'flex';
     tForm.reset();
     window.onclick = (e) => {

@@ -1,4 +1,4 @@
-import { addElement, closeSb, makeTask } from "./app";
+import {addElement, closeSb} from "./app";
 import { makeElement } from "./read";
 import './tasks'
 //Add Project Button
@@ -14,21 +14,16 @@ const addProjectBtn = document.querySelector('.addProject');
 //All list items
 let listItems = document.querySelectorAll('.listItem');
 
-//Closes form modal
-const closeModal = () => {
-    window.onclick = (e) => {
-        if (e.target == projectForm) {
-    projectForm.style.display = 'none'
-        }
-    }
-}
-
 //Opens Project form modal and calls addElement function with input values
 //which are pushed to local storage
 newProjectBtn.addEventListener('click', () => {
     projectForm.style.display = 'flex';
     proForm.reset()
-    closeModal()
+    window.onclick = (e) => {
+        if (e.target == projectForm) {
+            projectForm.style.display = 'none'
+        }
+    }
 });
 
 //Submits form and creates object
@@ -106,7 +101,10 @@ const makeProjectContainer = (pTitle, pDescription, list) => {
                 let toDoList = makeElement(list);
                     let addBtn = document.createElement('button')
                     addBtn.textContent = 'Add Task';
-                    addBtn.addEventListener('click', () => openTaskForm())
+                    addBtn.addEventListener('click', () => {
+                        openTaskForm();
+                        
+                    })
                 container.append(title, description, addBtn, toDoList);
     return container
 }
@@ -119,6 +117,10 @@ const date = document.querySelector('#tDate');
 const priority = document.querySelectorAll('.radio');
 const addTaskBtn = document.querySelector('.addTask');
 
+const addNewTaskBtn = document.createElement('button'); //This button is created from the project add task form 
+addNewTaskBtn.textContent = 'Add Task';
+addNewTaskBtn.classList.add('addTask')
+
 const openTaskForm = () => {
     taskForm.style.display = 'block';
     tForm.reset();
@@ -127,23 +129,23 @@ const openTaskForm = () => {
             taskForm.style.display = 'none'
         }
     }
-}
+    addTaskBtn.style.display = 'none' //Hides the misc tasks add button
+    tForm.append(addNewTaskBtn)
+};
+
+addNewTaskBtn.addEventListener('click', () => {
+    console.log('This is a new Project task');
+    addNewTaskBtn.style.display = 'none'; //Hides the project task add button
+    addTaskBtn.style.display = 'block' //Resets the misc task button
+});
 
 let prio = ''
 priority.forEach(opt => opt.addEventListener('change', (e) => prio = (e.target.value)));
-
-//Push new task to project array
-//////>>>> Needs to update the array in local storage
-addTaskBtn.addEventListener('click', () => pushToDo(currentProject))
-const pushToDo = (input, title, description, date, prio) => {
-    lookupTasks(input).push(title, description, date, prio)
-    console.log(lookupTasks(input))
-}
 
 //Adds projects list to sidebar and makes items clickable on page load
 (() => {
     makeLi();
     itemsListen();
     createTab()
-})()
-export {closeModal}
+})();
+
