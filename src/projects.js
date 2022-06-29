@@ -1,5 +1,6 @@
-import {addElement, closeSb} from "./app";
-import { makeElement } from "./read";
+import {addElement, closeSb, makeTask} from "./app";
+import { makeElement, splitObj } from "./read";
+import './app'
 import './tasks'
 //Add Project Button
 let newProjectBtn = document.querySelector('.newProject');
@@ -78,6 +79,7 @@ const createTab = (input) => {
    let tabList = tabSrc[0].toDo
    removeTab()
    document.querySelector('.main').append(makeProjectContainer(tabTitle, tabDescr, tabList))
+//    console.log(lookupTasks(input))
 }
 
 //Remove tabs
@@ -98,7 +100,9 @@ const makeProjectContainer = (pTitle, pDescription, list) => {
             let description = document.createElement('div');
             description.classList.add('proDescription');
             description.textContent = pDescription;
-                let toDoList = makeElement(list);
+///>>>>****Continue here: to do list items should render as individual containers
+                let toDoList = list.map(item => makeElement(splitObj(item).flat()));
+console.log(toDoList)
                     let addBtn = document.createElement('button')
                     addBtn.textContent = 'Add Task';
                     addBtn.addEventListener('click', () => {
@@ -131,13 +135,28 @@ const openTaskForm = () => {
     }
     addTaskBtn.style.display = 'none' //Hides the misc tasks add button
     tForm.append(addNewTaskBtn)
+    addNewTaskBtn.style.display = 'block'
 };
 
 addNewTaskBtn.addEventListener('click', () => {
-    console.log('This is a new Project task');
+    //let oldData = lookupTasks(currentProject);
+    let newData = makeTask(title.value, description.value, date.value, prio);
+    //oldData.push(newData)
+    pushToDo(newData);
     addNewTaskBtn.style.display = 'none'; //Hides the project task add button
     addTaskBtn.style.display = 'block' //Resets the misc task button
 });
+
+
+const pushToDo = (data) => {//Fn updates the local storage item
+    let oldState = localStorage.getObj('projects');
+    let oldArray = localStorage.getObj('projects').filter(item => item.title === currentProject)[0].toDo; //Grabs the array
+    let newData = data; //New task obj
+    oldArray.push(newData)
+    oldState.filter(item => item.title === currentProject)[0].toDo = oldArray;
+    localStorage.setItem('projects', JSON.stringify(oldState));
+    //console.log(localStorage.getObj('projects')[0].toDo.map(item => splitObj(item)))
+}
 
 let prio = ''
 priority.forEach(opt => opt.addEventListener('change', (e) => prio = (e.target.value)));

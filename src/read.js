@@ -50,4 +50,4 @@ const removeDivs = () => {
     }
 }
 
-export {appendTasks, removeDivs, makeElement}
+export {appendTasks, removeDivs, makeElement, splitObj, groupTasks}
