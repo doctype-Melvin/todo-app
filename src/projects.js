@@ -2,6 +2,7 @@ import {addElement, closeSb, makeTask} from "./app";
 import { makeElement, splitObj } from "./read";
 import './app'
 import './tasks'
+import { thaButtons } from "./update";
 //Add Project Button
 let newProjectBtn = document.querySelector('.newProject');
 
@@ -92,6 +93,8 @@ const removeTab = () => {
 
 //Create container for project title and description
 const makeProjectContainer = (pTitle, pDescription, list) => {
+    let details = document.createElement('div');
+    details.classList.add('details');
     let container = document.createElement('div');
     container.classList.add('proContainer');
         let title = document.createElement('div');
@@ -100,16 +103,15 @@ const makeProjectContainer = (pTitle, pDescription, list) => {
             let description = document.createElement('div');
             description.classList.add('proDescription');
             description.textContent = pDescription;
-///>>>>****Continue here: to do list items should render as individual containers
-                let toDoList = list.map(item => makeElement(splitObj(item).flat()));
-console.log(toDoList)
+                let toDoList = list.map(item => splitObj(item).flat());
                     let addBtn = document.createElement('button')
                     addBtn.textContent = 'Add Task';
                     addBtn.addEventListener('click', () => {
                         openTaskForm();
-                        
                     })
-                container.append(title, description, addBtn, toDoList);
+                    details.append(title, description, addBtn);
+                    main.append(details);
+               toDoList.map(item =>  container.append(makeElement(item)));
     return container
 }
 
@@ -167,4 +169,3 @@ priority.forEach(opt => opt.addEventListener('change', (e) => prio = (e.target.v
     itemsListen();
     createTab()
 })();
-

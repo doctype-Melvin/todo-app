@@ -1,4 +1,5 @@
 import './app'
+import { thaButtons } from './update';
 /////This module reads misc tasks from task array in local storage and 
 ////renders tasks to the main div
 
@@ -32,7 +33,18 @@ const makeElement = ([title, description, date, priority]) => {
                     let taskPriority = document.createElement('div');
                     taskPriority.classList.add('priority');
                     taskPriority.textContent = priority;
-                    container.append(taskTitle, taskDescription, taskDate, taskPriority);
+                        let editBtns = document.createElement('div');
+                        editBtns.classList.add('editBtns');
+                        let editor = document.createElement('button');
+                        let deletor = document.createElement('button');
+                        editor.classList.add('editBtn');
+                        deletor.classList.add('deleteBtn');
+                        editor.textContent = 'Edit';
+                        deletor.textContent = 'Delete'
+                        // editor.onclick = (e) => console.log(e.target)
+                        // deletor.onclick = (e) => console.log(e.target)
+                        editBtns.append(editor, deletor)
+                    container.append(taskTitle, taskDescription, taskDate, taskPriority, editBtns);
     return container
 }
 

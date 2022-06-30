@@ -52,10 +52,7 @@ html, body {
 
 .main {
     grid-area: main;
-    display: grid;
-    height: 100vh;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fit, minmax(50px, 100px));
+    
     transition: margin-left .3s;
     padding: 5px;
 }
@@ -89,9 +86,29 @@ html, body {
     margin: 10px auto;
 }
 
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 .tContainer {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: antiquewhite;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.proContainer {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(50px, 150px));
 }
 
 .newButtons, .tab {
