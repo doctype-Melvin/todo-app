@@ -1,3 +1,7 @@
+//Here are functions that are shared between both sections of the local storage
+
+//IIFE checks if storage items exist
+//if not creates them
 export const createStorage = (() => {
     if((localStorage.getItem('tasks') == null) &&
         (localStorage.getItem('projects') == null)){
@@ -12,6 +16,7 @@ export const createStorage = (() => {
                 }
 })()
 
+//Adds new obj to the selected storage section
 export const addToStorage = (location, data) => {
     if(location == 'tasks'){
         let array = JSON.parse(localStorage.getItem('tasks'));

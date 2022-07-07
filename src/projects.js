@@ -1,4 +1,4 @@
-//Projects local storage
+//Creates new obj with project data
 export const newProject = (a, b) => {
     let projectData = {};
     projectData['title'] = a;
