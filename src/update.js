@@ -17,9 +17,9 @@ const projectData = (a, b,) => {//Calls storage fn for the projects array and cr
     addToStorage('projects', (newProject(a, b)))
 };
 
-//projectData('New Project', '123')
+// projectData('New Project', '123')
 
-////////  Add new task to project toDo array
+////////  Create task in project toDo array
 //Look up obj in projects array
 const lookUp = (string) => {
     let projectsData = JSON.parse(localStorage.getItem('projects'));
@@ -47,17 +47,17 @@ const replaceObj = (newData, string) => {
     localStorage.setItem('projects', JSON.stringify(oldData))
 }
 
+//Creates new task and updates the projects obj
 const createProjectTask = (title, note, date, string) => {
     let task = newTask(title, note, date);
     return replaceObj(pushNewData(task, string), string)
 }
-
+// createProjectTask('Kill toddlers', 'With silence', 'Today', 'New Project')
 
 /////////  Remove task from project obj array
 //Remove array element at index i
 const updateArray = (data, i) => {
     let array = data;
-    //let index = i;
     array.splice(i, 1);
     return array
 }
@@ -78,3 +78,43 @@ const removeProjectTask = (i, string) => {
     return replaceObj(updateObj(updateArray(toDo, i), string), 'New Project')
 }
 //removeProjectTask(0, 'New Project')
+
+
+////////  Edit project tasks
+const getTask = (string, i) => {
+    let toDo = lookUp(string).toDo[i];
+   return toDo
+}
+
+const newValues = (task, note, date) => {
+    let newTask = task;
+    let newNote = note;
+    let newDate = date;
+    return {
+        newTask,
+        newNote,
+        newDate
+    }
+}
+
+const editTask = (string, i, newData) => {
+    let oldData = getTask(string, i);
+    
+    (oldData.title =! '' && newData.newTask == '') 
+    ? oldData.title = oldData.title 
+    : oldData.title = newData.newTask;
+    
+    (oldData.note =! '' && newData.newNote == '') 
+    ? oldData.note = oldData.note 
+    : oldData.note = newData.newNote;
+
+    (oldData.date =! '' && newData.newDate == '') 
+    ? oldData.date = oldData.date 
+    : oldData.date = newData.newDate;
+    
+    console.log(oldData)
+}
+
+
+
+console.log(editTask('New Project', 0, newValues('Have food', 'For thought', 'Today')))
