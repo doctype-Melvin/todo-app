@@ -1,3 +1,4 @@
+//Local storage is split into tasks and projects arrays
 //Here are functions that are shared between both sections of the local storage
 
 //IIFE checks if storage items exist
