@@ -20,7 +20,9 @@ const projectData = (a, b,) => {//Calls storage fn for the projects array and cr
 };
 
 // projectData('New Project', '123')
+// projectData('Example Project', 'Abc')
 
+//**PROJECT TASKS manipulation**
 ////////  Create task in project toDo array
 //Look up obj in projects array
 const lookUp = (string) => {
@@ -130,3 +132,29 @@ const editProjectTask = (string, i, task, note, date) => {
     return replaceTask(string, i , editTask(string, i, newValues(task, note, date)))
 }
 // console.log(replaceTask('New Project', 0, editTask('New Project', 0, newValues('Make lunch', 'Rice & Beans', 'today'))))
+
+
+//**PROJECT details manipulation**
+const getProjectDetails = (string) => {//Returns the projects obj
+    return lookUp(string)
+}
+
+const newProjectDetails = (a, b, oldData) => {//Checks for new project details and replaces the old obj
+    let oldTitle = oldData.title;
+    (a == '') ? oldData.title : oldData.title = a;
+    (b == '') ? oldData.description : oldData.description = b;
+    let newDetails = oldData
+    return replaceObj(newDetails, oldTitle)
+}
+
+const setProjectDetails = (string, a, b) => {
+return newProjectDetails(a, b, getProjectDetails(string));
+}
+
+// setProjectDetails('Old Project', 'Project Example', '123');
+
+const removeProject = (i) => {
+    let oldData = JSON.parse(localStorage.getItem('projects'));
+    oldData.splice(i, 1);
+    return localStorage.setItem('projects', JSON.stringify(oldData))
+}
