@@ -6,6 +6,7 @@ import { newTask} from "./tasks";
 
 ////////      Tasks
 //Add new data to storage location tasks
+//a = task, b = note, c = date
 const taskData = (a, b, c) => {//Calls storage fn for the tasks array and creates new task obj
     addToStorage('tasks', (newTask(a, b, c)))
 };
@@ -13,6 +14,7 @@ const taskData = (a, b, c) => {//Calls storage fn for the tasks array and create
 
 ///////       Projects
 //Add new data to storage location projects
+// a = title, b = description
 const projectData = (a, b,) => {//Calls storage fn for the projects array and creates new project obj
     addToStorage('projects', (newProject(a, b)))
 };
@@ -52,10 +54,11 @@ const createProjectTask = (title, note, date, string) => {
     let task = newTask(title, note, date);
     return replaceObj(pushNewData(task, string), string)
 }
-// createProjectTask('Kill toddlers', 'With silence', 'Today', 'New Project')
+
+//createProjectTask('Training', 'Upper', 'today', 'New Project')
 
 /////////  Remove task from project obj array
-//Remove array element at index i
+//Remove/Replace array element at index i
 const updateArray = (data, i) => {
     let array = data;
     array.splice(i, 1);
@@ -77,16 +80,16 @@ const removeProjectTask = (i, string) => {
     let toDo = lookUp(string).toDo
     return replaceObj(updateObj(updateArray(toDo, i), string), 'New Project')
 }
-//removeProjectTask(0, 'New Project')
+//removeProjectTask(1, 'New Project')
 
 
 ////////  Edit project tasks
-const getTask = (string, i) => {
-    let toDo = lookUp(string).toDo[i];
-   return toDo
+const getTask = (string, i) => {//Returns project task from index i
+    let task = lookUp(string).toDo[i];
+   return task
 }
 
-const newValues = (task, note, date) => {
+const newValues = (task, note, date) => {//Creates new task obj
     let newTask = task;
     let newNote = note;
     let newDate = date;
@@ -97,24 +100,33 @@ const newValues = (task, note, date) => {
     }
 }
 
-const editTask = (string, i, newData) => {
+const editTask = (string, i, newData) => {//updates task values
     let oldData = getTask(string, i);
-    
-    (oldData.title =! '' && newData.newTask == '') 
-    ? oldData.title = oldData.title 
-    : oldData.title = newData.newTask;
-    
-    (oldData.note =! '' && newData.newNote == '') 
-    ? oldData.note = oldData.note 
-    : oldData.note = newData.newNote;
 
-    (oldData.date =! '' && newData.newDate == '') 
-    ? oldData.date = oldData.date 
-    : oldData.date = newData.newDate;
+    (newData.newTask == '') ?
+    oldData.title : oldData.title = newData.newTask;
     
-    console.log(oldData)
+    (newData.newNote == '') ?
+    oldData.note = oldData.note : oldData.note = newData.newNote;
+    
+    (newData.newDate == '') ?
+    oldData.date = oldData.date : oldData.date = newData.newDate;
+    
+    return oldData
 }
 
+ const replaceTask = (string, i, newData) => {//replaces the task in project's task array
+    //updates the project's toDo array
+    //replaces the new project obj
+    let projectToDo = lookUp(string)['toDo'];
+    projectToDo.splice(i, 1, newData);
+    let projectObj = lookUp(string);
+    projectObj['toDo'] = projectToDo;
+    replaceObj(projectObj, string)
+    return projectObj
+}
 
-
-console.log(editTask('New Project', 0, newValues('Have food', 'For thought', 'Today')))
+const editProjectTask = (string, i, task, note, date) => {
+    return replaceTask(string, i , editTask(string, i, newValues(task, note, date)))
+}
+// console.log(replaceTask('New Project', 0, editTask('New Project', 0, newValues('Make lunch', 'Rice & Beans', 'today'))))
