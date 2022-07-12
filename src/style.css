@@ -16,7 +16,7 @@ html, body {
     gap: 15px;
 }
 
-.card:hover {
+.cardTitle:hover {
     cursor: pointer;
 }
 

@@ -21,13 +21,15 @@ const buttons = (() => {
     const projectBtn = document.querySelector('.submitProject');
     const newTaskBtn = document.querySelector('.newTask');
     const newProjectBtn = document.querySelector('.newProject');
+    const updateProject = document.querySelector('.updateProject');
 
 return {
     miscTaskBtn,
     projectTaskBtn,
     projectBtn,
     newTaskBtn,
-    newProjectBtn
+    newProjectBtn,
+    updateProject
 }
 })()
 
@@ -37,7 +39,7 @@ const inputs = (() => {
     const date = document.querySelector('.date');
     const title = document.querySelector('.title');
     const description = document.querySelector('.description');
-
+    
 return {
     task,
     note,
@@ -81,6 +83,7 @@ const createElement = (html, selector) => {//Helper fn to create dom elements
 const objCard = (task, flag) => {//creates cards with task details from local storage
     let project = createElement('span', 'flag')
     let card = createElement('div', 'card');
+    let cardDetails = createElement('div', 'cardDetails')
     let title = createElement('span', 'cardTitle');
     let note = createElement('span', 'cardNote');
     let date = createElement('span', 'cardDate');
@@ -95,7 +98,8 @@ const objCard = (task, flag) => {//creates cards with task details from local st
         edit.textContent = 'Edit';
         remove.textContent = 'Delete';
         buttons.append(edit, remove)
-    card.append(title, note, date, buttons, project);
+        cardDetails.append(title, note, date, project)
+    card.append(cardDetails, buttons);
     return card
 }
 
@@ -117,22 +121,22 @@ const appendProjects = () => {//appends project cards
     .forEach(item => display.append(objCard(item, true)))
 }
 
-document.querySelector('.viewAllProjects').addEventListener('click', () => {
+document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
     removeAllCards();
     appendProjects();
-    addEvListener()
+    renderProjectToDo();
 })
-document.querySelector('.viewAllTasks').addEventListener('click', () => {
+document.querySelector('.viewAllTasks').addEventListener('click', () => {//renders all misc tasks
     removeAllCards();
     appendCards();
-    addEvListener();
+    renderProjectToDo();
 })
 
-const addEvListener = () => {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => card.addEventListener('click', (e) => {
-        if(e.target.childNodes[4].textContent != 'false'){//checks for hidden flag of project (boolean)
-        let project = e.target.children[0].innerText; //selects the projects title string
+const renderProjectToDo = () => {//adds event listeners to all displayed cards
+    const cardTitles = document.querySelectorAll('.cardTitle');
+    cardTitles.forEach(card => card.addEventListener('click', (e) => {
+        if(e.target.parentElement.children[3].textContent != 'false'){//checks for hidden flag of project (boolean)
+        let project = e.target.textContent; //selects the projects title string
         removeAllCards();
         lookUp(project).toDo.forEach(task => display.append(objCard(task))) //looks up project todo array and
                                                                     //renders tasks as cards
@@ -141,6 +145,5 @@ const addEvListener = () => {
 }
 
 
-
 window.onload = appendCards();
-window.onload = addEvListener();
+window.onload = renderProjectToDo();
