@@ -1,4 +1,4 @@
-import { changeTask, createProjectTask, editProjectTask, projectData, removeProject, removeProjectTask, removeTask, setProjectDetails, taskData } from "./update";
+import { changeTask, createProjectTask, editProjectTask, lookUp, projectData, removeProject, removeProjectTask, removeTask, setProjectDetails, taskData } from "./update";
 
 //DOM rendering
 taskData //Calls storage fn for the tasks array and creates new task obj
@@ -78,39 +78,69 @@ const createElement = (html, selector) => {//Helper fn to create dom elements
     return element;
 }
 
-const objCard = (task) => {//creates cards with task details from local storage
+const objCard = (task, flag) => {//creates cards with task details from local storage
+    let project = createElement('span', 'flag')
     let card = createElement('div', 'card');
     let title = createElement('span', 'cardTitle');
     let note = createElement('span', 'cardNote');
     let date = createElement('span', 'cardDate');
+    project.textContent = flag
     title.textContent = task.title;
     note.textContent = task.note || task.description;
     date.textContent = task.date;
+    project.style.visibility = 'hidden';
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
         let remove = createElement('button', 'removeBtn');
         edit.textContent = 'Edit';
         remove.textContent = 'Delete';
         buttons.append(edit, remove)
-    card.append(title, note, date, buttons);
+    card.append(title, note, date, buttons, project);
     return card
 }
 
-const removeAllCards = () => {
+const removeAllCards = () => {//removes cards appended to display
     while (display.firstChild) {
         display.removeChild(display.lastChild)
     }
 }
 
-const appendCards = () => {
+const appendCards = () => {//appends task cards
     JSON.parse(localStorage.getItem('tasks'))
     .forEach((item) => {
-        display.append(objCard(item))
+        display.append(objCard(item, false))
     })
 }
 
-const appendProjects = () => {
+const appendProjects = () => {//appends project cards
     JSON.parse(localStorage.getItem('projects'))
-    .forEach(item => display.append(objCard(item)))
+    .forEach(item => display.append(objCard(item, true)))
 }
-window.onload = appendCards()
+
+document.querySelector('.viewAllProjects').addEventListener('click', () => {
+    removeAllCards();
+    appendProjects();
+    addEvListener()
+})
+document.querySelector('.viewAllTasks').addEventListener('click', () => {
+    removeAllCards();
+    appendCards();
+    addEvListener();
+})
+
+const addEvListener = () => {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => card.addEventListener('click', (e) => {
+        if(e.target.childNodes[4].textContent != 'false'){//checks for hidden flag of project (boolean)
+        let project = e.target.children[0].innerText; //selects the projects title string
+        removeAllCards();
+        lookUp(project).toDo.forEach(task => display.append(objCard(task))) //looks up project todo array and
+                                                                    //renders tasks as cards
+    }else return
+    }))
+}
+
+
+
+window.onload = appendCards();
+window.onload = addEvListener();

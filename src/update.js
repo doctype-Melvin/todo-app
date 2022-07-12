@@ -47,7 +47,7 @@ export const projectData = (a, b,) => {//Calls storage fn for the projects array
 //**PROJECT TASKS manipulation**
 ////////  Create task in project toDo array
 //Look up obj in projects array
-const lookUp = (string) => {
+export const lookUp = (string) => {
     let projectsData = JSON.parse(localStorage.getItem('projects'));
     let obj = projectsData.filter(item => item.title == string)[0];
     return obj
