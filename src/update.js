@@ -7,7 +7,7 @@ import { newTask} from "./tasks";
 ////////      Tasks
 //Add new data to storage location tasks
 //a = task, b = note, c = date
-const taskData = (a, b, c) => {//Calls storage fn for the tasks array and creates new task obj
+export const taskData = (a, b, c) => {//Calls storage fn for the tasks array and creates new task obj
     addToStorage('tasks', (newTask(a, b, c)))
 };
 // taskData('Write code', 'this app', 'today');
@@ -15,7 +15,7 @@ const taskData = (a, b, c) => {//Calls storage fn for the tasks array and create
 // taskData('Training', 'Upper body', 'today');
 
 //Edit task details
-const changeTask = (i, a, b, c) => {
+export const changeTask = (i, a, b, c) => {
     let oldData = JSON.parse(localStorage.getItem('tasks'));
     let task = oldData[i];
     task.title = a;
@@ -27,7 +27,7 @@ const changeTask = (i, a, b, c) => {
 // changeTask(0, 'Listen to music', 'classical', 'today')
 
 //Delete task
-const removeTask = (i) => {
+export const removeTask = (i) => {
     let oldData = JSON.parse(localStorage.getItem('tasks'));
     oldData.splice(i, 1);
     return localStorage.setItem('tasks', JSON.stringify(oldData))
@@ -37,7 +37,7 @@ const removeTask = (i) => {
 ///////       Projects
 //Add new data to storage location projects
 // a = title, b = description
-const projectData = (a, b,) => {//Calls storage fn for the projects array and creates new project obj
+export const projectData = (a, b,) => {//Calls storage fn for the projects array and creates new project obj
     addToStorage('projects', (newProject(a, b)))
 };
 
@@ -74,7 +74,7 @@ const replaceObj = (newData, string) => {
 }
 
 //Creates new task and updates the projects obj
-const createProjectTask = (title, note, date, string) => {
+export const createProjectTask = (title, note, date, string) => {
     let task = newTask(title, note, date);
     return replaceObj(pushNewData(task, string), string)
 }
@@ -82,7 +82,7 @@ const createProjectTask = (title, note, date, string) => {
 //createProjectTask('Training', 'Upper', 'today', 'New Project')
 
 /////////  Remove task from project obj array
-//Remove/Replace array element at index i
+//Remove array element at index i
 const updateArray = (data, i) => {
     let array = data;
     array.splice(i, 1);
@@ -100,9 +100,9 @@ const updateObj = (data, string) => {
 //Fn takes index and project title as arguments
 //Grabs the projects toDo list, removes the desired index item,
 //and updates the toDo list
-const removeProjectTask = (i, string) => {
+export const removeProjectTask = (i, string) => {
     let toDo = lookUp(string).toDo
-    return replaceObj(updateObj(updateArray(toDo, i), string), 'New Project')
+    return replaceObj(updateObj(updateArray(toDo, i), string), string)
 }
 //removeProjectTask(1, 'New Project')
 
@@ -150,7 +150,7 @@ const editTask = (string, i, newData) => {//updates task values
     return projectObj
 }
 
-const editProjectTask = (string, i, task, note, date) => {
+export const editProjectTask = (string, i, task, note, date) => {
     return replaceTask(string, i , editTask(string, i, newValues(task, note, date)))
 }
 // console.log(replaceTask('New Project', 0, editTask('New Project', 0, newValues('Make lunch', 'Rice & Beans', 'today'))))
@@ -169,13 +169,13 @@ const newProjectDetails = (a, b, oldData) => {//Checks for new project details a
     return replaceObj(newDetails, oldTitle)
 }
 
-const setProjectDetails = (string, a, b) => {
+export const setProjectDetails = (string, a, b) => {
 return newProjectDetails(a, b, getProjectDetails(string));
 }
 
 // setProjectDetails('Old Project', 'Project Example', '123');
 
-const removeProject = (i) => {
+export const removeProject = (i) => {
     let oldData = JSON.parse(localStorage.getItem('projects'));
     oldData.splice(i, 1);
     return localStorage.setItem('projects', JSON.stringify(oldData))

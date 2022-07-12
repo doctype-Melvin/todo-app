@@ -1,3 +1,9 @@
+import image from './menu.png'
+const icon = new Image();
+icon.classList.add('menu');
+icon.src = image;
+document.querySelector('.menu').append(icon);
+
 //Local storage is split into tasks and projects arrays
 //Here are functions that are shared between both sections of the local storage
 
