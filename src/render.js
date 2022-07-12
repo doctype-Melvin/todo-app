@@ -52,14 +52,16 @@ return {
 buttons.miscTaskBtn.addEventListener('click', (e) => {
     e.preventDefault();
     taskData(inputs.task.value, inputs.note.value, inputs.date.value);
-    removeAllCards()
-    appendCards()
+    removeAllCards();
+    appendCards();
 });
 
 //Add project
-buttons.newProjectBtn.addEventListener('click', (e) => {
+buttons.projectBtn.addEventListener('click', (e) => {
     e.preventDefault();
     projectData(inputs.title.value, inputs.description.value);
+    removeAllCards();
+    appendProjects();
 });
 
 //Add project task
@@ -76,7 +78,7 @@ const createElement = (html, selector) => {//Helper fn to create dom elements
     return element;
 }
 
-const taskCard = (task) => {//creates cards with task details from local storage
+const objCard = (task) => {//creates cards with task details from local storage
     let card = createElement('div', 'card');
     let title = createElement('span', 'cardTitle');
     let note = createElement('span', 'cardNote');
@@ -100,11 +102,15 @@ const removeAllCards = () => {
     }
 }
 
-let tasksArray = JSON.parse(localStorage.getItem('tasks'));
 const appendCards = () => {
     JSON.parse(localStorage.getItem('tasks'))
     .forEach((item) => {
-        display.append(taskCard(item))
+        display.append(objCard(item))
     })
+}
+
+const appendProjects = () => {
+    JSON.parse(localStorage.getItem('projects'))
+    .forEach(item => display.append(objCard(item)))
 }
 window.onload = appendCards()
