@@ -84,7 +84,7 @@ const objCard = (task) => {//creates cards with task details from local storage
     let note = createElement('span', 'cardNote');
     let date = createElement('span', 'cardDate');
     title.textContent = task.title;
-    note.textContent = task.note;
+    note.textContent = task.note || task.description;
     date.textContent = task.date;
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
