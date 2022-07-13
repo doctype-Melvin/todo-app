@@ -27,3 +27,27 @@ html, body {
     box-shadow: 3px 3px 10px rgba(175, 176, 176, 0.52);
 }
 
+.tasks{
+    display: none;
+}
+
+.projects{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(231, 231, 231, 0.557);
+}
+
+fieldset {
+    background-color: #fefefe;
+    margin: 20% auto;
+    padding: 30px;
+    border: solid 1px black;
+    border-radius: 5px;
+    width: 70%;
+}
