@@ -1,4 +1,4 @@
-import { changeTask, createProjectTask, editProjectTask, lookUp, projectData, removeProject, removeProjectTask, removeTask, setProjectDetails, taskData } from "./update";
+import { changeTask, createProjectTask, editProjectTask, getProjectDetails, lookUp, newProjectDetails, projectData, removeProject, removeProjectTask, removeTask, replaceObj, setProjectDetails, taskData } from "./update";
 
 //DOM rendering
 taskData //Calls storage fn for the tasks array and creates new task obj
@@ -120,12 +120,16 @@ const appendProjects = () => {//appends project cards
     JSON.parse(localStorage.getItem('projects'))
     .forEach(item => display.append(objCard(item, true)))
 }
-
-document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
+function refreshProjects(){
     removeAllCards();
     appendProjects();
     renderProjectToDo();
+    editProjectDetails();
+}
+document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
+    refreshProjects()
 })
+
 document.querySelector('.viewAllTasks').addEventListener('click', () => {//renders all misc tasks
     removeAllCards();
     appendCards();
@@ -144,6 +148,21 @@ const renderProjectToDo = () => {//adds event listeners to all displayed cards
     }))
 }
 
+const editProjectDetails = () => {
+    let target = ''
+    const editBtns = [...document.querySelectorAll('.editBtn')];
+    editBtns.map(btn => btn.addEventListener('click', (e) => {
+        target = e.target.parentElement.parentElement.children[0].children[0].textContent;
+        const updateBtn = document.querySelector('.updateProject');
+        updateBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let title = inputs.title.value;
+            let description = inputs.description.value;
+            setProjectDetails(title, description, target);
+            refreshProjects()
+        })
+    }))
+}
 
 window.onload = appendCards();
 window.onload = renderProjectToDo();

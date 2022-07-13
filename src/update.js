@@ -65,12 +65,14 @@ const pushNewData = (data, string) => {
 
 //Update the obj in projects array
 //Fn creates new task, pushes the task to the obj array & replaces the project obj in the parent projects array
-const replaceObj = (newData, string) => {
-    let index = JSON.parse(localStorage.getItem('projects')).indexOf(lookUp(string));
+export const replaceObj = (newData, string) => {
+    const condition = (el) => el.title == string;
+    let index = JSON.parse(localStorage.getItem('projects')).findIndex(condition);
     let newObj = newData;
     let oldData = JSON.parse(localStorage.getItem('projects'))
     oldData.splice(index, 1, newObj);
     localStorage.setItem('projects', JSON.stringify(oldData))
+    return index
 }
 
 //Creates new task and updates the projects obj
@@ -157,11 +159,11 @@ export const editProjectTask = (string, i, task, note, date) => {
 
 
 //**PROJECT details manipulation**
-const getProjectDetails = (string) => {//Returns the projects obj
+export const getProjectDetails = (string) => {//Returns the projects obj
     return lookUp(string)
 }
 
-const newProjectDetails = (a, b, oldData) => {//Checks for new project details and replaces the old obj
+export const newProjectDetails = (a, b, oldData) => {//Checks for new project details and replaces the old obj
     let oldTitle = oldData.title;
     (a == '') ? oldData.title : oldData.title = a;
     (b == '') ? oldData.description : oldData.description = b;
@@ -169,11 +171,11 @@ const newProjectDetails = (a, b, oldData) => {//Checks for new project details a
     return replaceObj(newDetails, oldTitle)
 }
 
-export const setProjectDetails = (string, a, b) => {
+export const setProjectDetails = (a, b, string) => {
 return newProjectDetails(a, b, getProjectDetails(string));
 }
 
-// setProjectDetails('Old Project', 'Project Example', '123');
+// setProjectDetails('Old Project', 'Project Example', 'Make choices');
 
 export const removeProject = (i) => {
     let oldData = JSON.parse(localStorage.getItem('projects'));
