@@ -57,13 +57,6 @@ buttons.miscTaskBtn.addEventListener('click', (e) => {
     appendCards();
 });
 
-//Add project
-buttons.projectBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    projectData(inputs.title.value, inputs.description.value);
-    refreshProjects()
-});
-
 //Add project task
 buttons.projectTaskBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -78,6 +71,7 @@ const createElement = (html, selector) => {//Helper fn to create dom elements
     return element;
 }
 
+//Create cards -- Card Factory
 const objCard = (task, flag) => {//creates cards with task details from local storage
     let project = createElement('span', 'flag')
     let card = createElement('div', 'card');
@@ -125,7 +119,8 @@ function refreshProjects(){
     editProjectDetails();
 }
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
-    refreshProjects()
+    refreshProjects();
+    
 })
 
 document.querySelector('.viewAllTasks').addEventListener('click', () => {//renders all misc tasks
@@ -146,14 +141,22 @@ const renderProjectToDo = () => {//adds event listeners to all displayed cards
     }))
 }
 
+//Open project edit modal
 const openProjectModalEdit = () => {
     document.querySelector('.projects').style.display = 'block';
     document.querySelector('.submitProject').style.display = 'none';
+    document.querySelector('.updateProject').style.display = 'inline-block';
+    document.querySelector('.form').reset();
 }
 
+//Open add new project modal
 const openProjectModal = () => {
     document.querySelector('.projects').style.display = 'block';
     document.querySelector('.updateProject').style.display = 'none';
+    document.querySelector('.submitProject').style.display = 'inline-block'
+    document.querySelector('.submitProject').addEventListener('click', () => {
+        document.querySelector('.projects').style.display = 'none';
+    })
 }
 
 const closeModal = () => {
@@ -165,35 +168,49 @@ const closeModal = () => {
     }
 }
 }
+//Delete project button
 
-let target = ''
+
+//Problem: 
+//TypeError lookUp is undefined
+
+//Edit project details
+let target = '';
+let oldState = ''
 const editProjectDetails = () => {
     const editBtns = document.querySelectorAll('.editBtn');
     editBtns.forEach(btn => btn.addEventListener('click', (e) => {
         openProjectModalEdit();
         closeModal();
         target = e.target.parentElement.parentElement.children[0].children[0].textContent;
-        let oldState = getProject(target);
+        console.log(target)
         const updateBtn = document.querySelector('.updateProject');
         updateBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            let title = inputs.title.value;
-            let description = inputs.description.value;
-            editedProject(title, description, oldState)
-            refreshProjects()
-            document.querySelector('.form').reset()
-            closeModal();
-        })
+            oldState = getProject(target);
+            console.log(oldState)
+                let title = inputs.title.value;
+                let description = inputs.description.value;
+                e.preventDefault();
+                editedProject(title, description, oldState)
+                refreshProjects()
+                document.querySelector('.projects').style.display = 'none';
+            })
     }))
 }
 
+
 buttons.newProjectBtn.addEventListener('click', () => {
     openProjectModal();
-    closeModal()
+    closeModal();
+    document.querySelector('.form').reset()
 })
 
-buttons.projectBtn.addEventListener('click', () => {
-    closeModal()
+//Button passes form to local storage
+buttons.projectBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    projectData(inputs.title.value, inputs.description.value);
+    refreshProjects();
+    closeModal();
 });
 
 window.onload = appendCards();

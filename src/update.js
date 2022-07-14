@@ -72,7 +72,8 @@ export const replaceObj = (newData, string) => {
     let oldData = JSON.parse(localStorage.getItem('projects'))
     oldData.splice(index, 1, newObj);
     localStorage.setItem('projects', JSON.stringify(oldData))
-    return index
+    console.log('replaceObj:', index, newObj, oldData)
+
 }
 
 //Creates new task and updates the projects obj
@@ -166,6 +167,7 @@ export const getProject = (obj) => {
     currentObj.title = target;
     currentObj.index = index;
     currentObj.toDo = lookUp(target).toDo
+    console.log('getProject:', currentObj)
     return currentObj
 }
 
@@ -174,6 +176,7 @@ export const editedProject = (a, b, oldData) => {//oldData is the returned obj f
     newObj.title = a;
     newObj.description = b;
     newObj.toDo = oldData.toDo
+    console.log('editedProject:', newObj, oldData.title)
     replaceObj(newObj, oldData.title)
 }
 
