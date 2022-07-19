@@ -192,7 +192,7 @@ function test(){
                     let newObj = {}
                     newObj.title = inputs.title.value;
                     newObj.description = inputs.description.value;
-                    newObj.toDo = obj.toDo
+                    newObj.toDo = obj[0].toDo
                     data.splice(index, 1, newObj);
                     localStorage.setItem('projects', JSON.stringify(data))
                     refreshProjects();
