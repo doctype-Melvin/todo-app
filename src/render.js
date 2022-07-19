@@ -116,7 +116,7 @@ function refreshProjects(){
     removeAllCards();
     appendProjects();
     renderProjectToDo();
-    test()
+    editProject()
 }
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
     refreshProjects();
@@ -170,34 +170,35 @@ const closeModal = () => {
 //Delete project button
 
 //Edit project details
-
-//Create new obj from form input
-//Find old obj index
-//replace old obj with new obj
-//When aborting, reset data to old state
-let trueArray = [];
-function test(){
+function editProject(){
     const updateProjectBtn = document.querySelector('.updateProject');
+    const deleteBtns = document.querySelectorAll('.removeBtn');
         const editBtns = document.querySelectorAll('.editBtn');
+        let data = JSON.parse(localStorage.getItem('projects'));
             editBtns.forEach(btn => btn.addEventListener('click', (e) => {
-                let projectName = defineCard(e);
-                let data = JSON.parse(localStorage.getItem('projects'));
-                let obj = data.filter(item => item.title == projectName);
-                let index = data.findIndex(obj => obj.title == projectName)
+                let projectName = defineCard(e); //Gets project title
+                let obj = data.filter(item => item.title == projectName); 
+                let index = data.findIndex(obj => obj.title == projectName);
                 console.log(projectName, data, obj[0], index)
                 openProjectModalEdit();
-                //trueArray.push(projectName)
                 updateProjectBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    let newObj = {}
-                    newObj.title = inputs.title.value;
-                    newObj.description = inputs.description.value;
-                    newObj.toDo = obj[0].toDo
+                    let newObj = newProjectObj()
+                    newObj.toDo = obj[0].toDo;
                     data.splice(index, 1, newObj);
                     localStorage.setItem('projects', JSON.stringify(data))
                     refreshProjects();
-                    document.querySelector('.projects').style.display = 'none'
+                    document.querySelector('.projects').style.display = 'none';
     })
+}
+))
+deleteBtns.forEach(btn => btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    let projectName = defineCard(e);
+    let index = data.findIndex(obj => obj.title == projectName);
+    data.splice(index, 1);
+    localStorage.setItem('projects', JSON.stringify(data));
+    refreshProjects();
 }))
 }
 
@@ -208,7 +209,7 @@ function newProjectObj(){
     return newObj
 }
 
-function defineCard(e){
+function defineCard(e){//Returns project title string
     let project = e.target.parentElement.parentElement.children[0].children[0].textContent;
     return project
 }

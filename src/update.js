@@ -67,10 +67,11 @@ const pushNewData = (data, string) => {
 //Replace old data in projects array with new data by splicing
 
 export const replaceObj = (newData, index) => {
-    let newObj = newData;
+    console.log(newData, index)
     let oldData = JSON.parse(localStorage.getItem('projects'))
-    oldData.splice(index, 1, newObj);
+    oldData.splice(index, 1, newData);
     localStorage.setItem('projects', JSON.stringify(oldData));
+    return
 }
 
 //Creates new task and updates the projects obj
