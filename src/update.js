@@ -54,7 +54,7 @@ export const lookUp = (string) => {
 }
 
 //Update the obj array
-const pushNewData = (data, string) => {
+export const pushNewData = (data, string) => {
     let newData = data;
     let oldObj = lookUp(string);
     let objArr = oldObj.toDo;
@@ -71,7 +71,6 @@ export const replaceObj = (newData, index) => {
     let oldData = JSON.parse(localStorage.getItem('projects'))
     oldData.splice(index, 1, newData);
     localStorage.setItem('projects', JSON.stringify(oldData));
-    return
 }
 
 //Creates new task and updates the projects obj
@@ -80,7 +79,7 @@ export const createProjectTask = (title, note, date, string) => {
     return replaceObj(pushNewData(task, string), string)
 }
 
-//createProjectTask('Training', 'Upper', 'today', 'New Project')
+// createProjectTask('Training', 'Upper', 'today', 'New Project')
 
 /////////  Remove task from project obj array
 //Remove array element at index i
@@ -158,9 +157,6 @@ export const editProjectTask = (string, i, task, note, date) => {
 
 
 //**PROJECT details manipulation**
-
-
-//  setProjectDetails('Old Project', 'Project Example', 'Example');
 
 export const removeProject = (i) => {
     let oldData = JSON.parse(localStorage.getItem('projects'));

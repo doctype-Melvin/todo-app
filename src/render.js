@@ -1,4 +1,5 @@
-import { changeTask, createProjectTask, editedProject, editProjectTask, getProject, getProjectDetails, lookUp, newProjectDetails, projectData, removeProject, removeProjectTask, removeTask, replaceObj, showProjectIndex, taskData} from "./update";
+import { newTask } from "./tasks";
+import { changeTask, createProjectTask, editedProject, editProjectTask, getProject, getProjectDetails, lookUp, newProjectDetails, projectData, pushNewData, removeProject, removeProjectTask, removeTask, replaceObj, showProjectIndex, taskData} from "./update";
 
 //DOM rendering
 taskData //Calls storage fn for the tasks array and creates new task obj
@@ -11,8 +12,8 @@ removeProjectTask
 editProjectTask
 removeProject
 //Setup
-const tasksModal = document.querySelector('tasks');
-const projectModal = document.querySelector('projects');
+const tasksModal = document.querySelector('.tasks');
+const projectModal = document.querySelector('.projects');
 
 const buttons = (() => {
     const miscTaskBtn = document.getElementById('miscTask');
@@ -21,6 +22,8 @@ const buttons = (() => {
     const newTaskBtn = document.querySelector('.newTask');
     const newProjectBtn = document.querySelector('.newProject');
     const updateProject = document.querySelector('.updateProject');
+    let newProjectTaskBtn = createElement('button', 'addProjectTask');
+        newProjectTaskBtn.textContent = 'New Project Task'
 
 return {
     miscTaskBtn,
@@ -28,7 +31,8 @@ return {
     projectBtn,
     newTaskBtn,
     newProjectBtn,
-    updateProject
+    updateProject,
+    newProjectTaskBtn
 }
 })()
 
@@ -65,7 +69,7 @@ buttons.projectTaskBtn.addEventListener('click', (e) => {
 //Display DOM cards
 const display = document.querySelector('.display');
 
-const createElement = (html, selector) => {//Helper fn to create dom elements
+function createElement(html, selector){//Helper fn to create dom elements
     let element = document.createElement(html);
     element.classList.add(selector);
     return element;
@@ -112,14 +116,19 @@ const appendProjects = () => {//appends project cards
     JSON.parse(localStorage.getItem('projects'))
     .forEach(item => display.append(objCard(item, true)))
 }
-function refreshProjects(){
+function refreshProjects(){//Reloads all cards
     removeAllCards();
     appendProjects();
     renderProjectToDo();
     editProject()
 }
+
+//Buttons to toggle view in GUI
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
     refreshProjects();
+    buttons.newProjectBtn.style.display = 'inline';
+    buttons.newTaskBtn.style.display = 'inline';
+    buttons.newProjectTaskBtn.style.display = 'none';
 })
 
 document.querySelector('.viewAllTasks').addEventListener('click', () => {//renders all misc tasks
@@ -128,16 +137,35 @@ document.querySelector('.viewAllTasks').addEventListener('click', () => {//rende
     renderProjectToDo();
 })
 
+//Makes project title clickable and shows the project's to do list
 const renderProjectToDo = () => {//adds event listeners to all displayed cards
     const cardTitles = document.querySelectorAll('.cardTitle');
     cardTitles.forEach(card => card.addEventListener('click', (e) => {
         if(e.target.parentElement.children[3].textContent != 'false'){//checks for hidden flag of project (boolean)
         let project = e.target.textContent; //selects the projects title string
         removeAllCards();
-        lookUp(project).toDo.forEach(task => display.append(objCard(task))) //looks up project todo array and
-                                                                    //renders tasks as cards
+        lookUp(project).toDo.forEach(task => display.append(objCard(task))) //looks up project todo array and renders tasks as cards
+            buttons.newProjectBtn.style.display = 'none'; //Hide new project button
+            buttons.newTaskBtn.style.display = 'none'; //Hide new misc task button
+            buttons.newProjectTaskBtn.style.display = 'inline' //Show new project task button
+                document.querySelector('.buttons').append(buttons.newProjectTaskBtn);
+                    buttons.newProjectTaskBtn.addEventListener('click', () => {
+                        openTaskModal();
+                        buttons.projectTaskBtn.addEventListener('click', () => {
+                            let task = newTask(inputs.task.value, inputs.note.value, inputs.date.value)
+                            //push task to obj array and update local storage
+                        })
+                    })
     }else return
     }))
+}
+
+function openTaskModal(){
+    tasksModal.style.display = 'block';
+    document.getElementById('miscTask').style.display = 'none';
+    document.querySelector('.updateTask').style.display = 'none';
+    document.querySelector('.updateProjectTask').style.display = 'none';
+    closeModal()
 }
 
 //Open project edit modal
@@ -161,15 +189,12 @@ const openProjectModal = () => {
 
 const closeModal = () => {
     window.onclick = (e) => {
-    let modal = document.querySelector('.projects') || document.querySelector('.tasks')
-    if(e.target == modal) {
-        modal.style.display = 'none';
+    if(e.target == tasksModal || e.target == projectModal) {
+        e.target.style.display = 'none';
     }
 }
 }
-//Delete project button
-
-//Edit project details
+//Edit project details and remove project form GUI and local storage
 function editProject(){
     const updateProjectBtn = document.querySelector('.updateProject');
     const deleteBtns = document.querySelectorAll('.removeBtn');
@@ -196,8 +221,7 @@ deleteBtns.forEach(btn => btn.addEventListener('click', (e) => {
     e.preventDefault();
     let projectName = defineCard(e);
     let index = data.findIndex(obj => obj.title == projectName);
-    data.splice(index, 1);
-    localStorage.setItem('projects', JSON.stringify(data));
+    removeProject(index)
     refreshProjects();
 }))
 }
