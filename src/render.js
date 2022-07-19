@@ -116,11 +116,10 @@ function refreshProjects(){
     removeAllCards();
     appendProjects();
     renderProjectToDo();
-    editProjectDetails();
+    test()
 }
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
     refreshProjects();
-    
 })
 
 document.querySelector('.viewAllTasks').addEventListener('click', () => {//renders all misc tasks
@@ -147,6 +146,7 @@ const openProjectModalEdit = () => {
     document.querySelector('.submitProject').style.display = 'none';
     document.querySelector('.updateProject').style.display = 'inline-block';
     document.querySelector('.form').reset();
+    closeModal()
 }
 
 //Open add new project modal
@@ -164,46 +164,61 @@ const closeModal = () => {
     let modal = document.querySelector('.projects') || document.querySelector('.tasks')
     if(e.target == modal) {
         modal.style.display = 'none';
-        target = ''
     }
 }
 }
 //Delete project button
 
-
-//Problem: 
-//TypeError lookUp is undefined
-
 //Edit project details
-let target = '';
-let oldState = ''
-const editProjectDetails = () => {
-    const editBtns = document.querySelectorAll('.editBtn');
-    editBtns.forEach(btn => btn.addEventListener('click', (e) => {
-        openProjectModalEdit();
-        closeModal();
-        target = e.target.parentElement.parentElement.children[0].children[0].textContent;
-        console.log(target)
-        const updateBtn = document.querySelector('.updateProject');
-        updateBtn.addEventListener('click', (e) => {
-            oldState = getProject(target);
-            console.log(oldState)
-                let title = inputs.title.value;
-                let description = inputs.description.value;
-                e.preventDefault();
-                editedProject(title, description, oldState)
-                refreshProjects()
-                document.querySelector('.projects').style.display = 'none';
-            })
-    }))
+
+//Create new obj from form input
+//Find old obj index
+//replace old obj with new obj
+//When aborting, reset data to old state
+let trueArray = [];
+function test(){
+    const updateProjectBtn = document.querySelector('.updateProject');
+        const editBtns = document.querySelectorAll('.editBtn');
+            editBtns.forEach(btn => btn.addEventListener('click', (e) => {
+                let projectName = defineCard(e);
+                let data = JSON.parse(localStorage.getItem('projects'));
+                let obj = data.filter(item => item.title == projectName);
+                let index = data.findIndex(obj => obj.title == projectName)
+                console.log(projectName, data, obj[0], index)
+                openProjectModalEdit();
+                //trueArray.push(projectName)
+                updateProjectBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    let newObj = {}
+                    newObj.title = inputs.title.value;
+                    newObj.description = inputs.description.value;
+                    newObj.toDo = obj.toDo
+                    data.splice(index, 1, newObj);
+                    localStorage.setItem('projects', JSON.stringify(data))
+                    refreshProjects();
+                    document.querySelector('.projects').style.display = 'none'
+    })
+}))
 }
 
+function newProjectObj(){
+    let newObj = {};
+    newObj.title = inputs.title.value;
+    newObj.description = inputs.description.value;
+    return newObj
+}
+
+function defineCard(e){
+    let project = e.target.parentElement.parentElement.children[0].children[0].textContent;
+    return project
+}
 
 buttons.newProjectBtn.addEventListener('click', () => {
     openProjectModal();
     closeModal();
     document.querySelector('.form').reset()
 })
+
 
 //Button passes form to local storage
 buttons.projectBtn.addEventListener('click', (e) => {

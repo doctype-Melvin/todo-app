@@ -64,16 +64,13 @@ const pushNewData = (data, string) => {
 }
 
 //Update the obj in projects array
-//Fn creates new task, pushes the task to the obj array & replaces the project obj in the parent projects array
-export const replaceObj = (newData, string) => {
-    const condition = (el) => el.title == string;
-    let index = JSON.parse(localStorage.getItem('projects')).findIndex(condition);
+//Replace old data in projects array with new data by splicing
+
+export const replaceObj = (newData, index) => {
     let newObj = newData;
     let oldData = JSON.parse(localStorage.getItem('projects'))
     oldData.splice(index, 1, newObj);
-    localStorage.setItem('projects', JSON.stringify(oldData))
-    console.log('replaceObj:', index, newObj, oldData)
-
+    localStorage.setItem('projects', JSON.stringify(oldData));
 }
 
 //Creates new task and updates the projects obj
@@ -160,25 +157,7 @@ export const editProjectTask = (string, i, task, note, date) => {
 
 
 //**PROJECT details manipulation**
-export const getProject = (obj) => {
-    let currentObj = {}
-    let target = obj
-    let index = JSON.parse(localStorage.getItem('projects')).findIndex(el => el.title == target);
-    currentObj.title = target;
-    currentObj.index = index;
-    currentObj.toDo = lookUp(target).toDo
-    console.log('getProject:', currentObj)
-    return currentObj
-}
 
-export const editedProject = (a, b, oldData) => {//oldData is the returned obj from getProject fn
-    let newObj = {};
-    newObj.title = a;
-    newObj.description = b;
-    newObj.toDo = oldData.toDo
-    console.log('editedProject:', newObj, oldData.title)
-    replaceObj(newObj, oldData.title)
-}
 
 //  setProjectDetails('Old Project', 'Project Example', 'Example');
 
