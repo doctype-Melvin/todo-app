@@ -112,6 +112,7 @@ const appendCards = () => {//appends task cards
     })
 }
 
+
 const appendProjects = () => {//appends project cards
     JSON.parse(localStorage.getItem('projects'))
     .forEach(item => display.append(objCard(item, true)))
@@ -137,10 +138,11 @@ document.querySelector('.viewAllTasks').addEventListener('click', () => {//rende
     renderProjectToDo();
 })
 
-//Makes project title clickable and shows the project's to do list
-const renderProjectToDo = () => {//adds event listeners to all displayed cards
+//Makes card title clickable and shows the project's to do list
+//Enables adding new project task
+const renderProjectToDo = () => {
     const cardTitles = document.querySelectorAll('.cardTitle');
-    cardTitles.forEach(card => card.addEventListener('click', (e) => {
+    cardTitles.forEach(card => card.addEventListener('click', (e) => {//adds event listeners to all displayed cards
         if(e.target.parentElement.children[3].textContent != 'false'){//checks for hidden flag of project (boolean)
         let project = e.target.textContent; //selects the projects title string
         removeAllCards();
@@ -149,11 +151,22 @@ const renderProjectToDo = () => {//adds event listeners to all displayed cards
             buttons.newTaskBtn.style.display = 'none'; //Hide new misc task button
             buttons.newProjectTaskBtn.style.display = 'inline' //Show new project task button
                 document.querySelector('.buttons').append(buttons.newProjectTaskBtn);
-                    buttons.newProjectTaskBtn.addEventListener('click', () => {
+                buttons.newProjectTaskBtn.addEventListener('click', () => {
+                        let projects = JSON.parse(localStorage.getItem('projects'));
+                        let index = projects.findIndex(item => item.title == project);
+                        let target = projects[index];
+                        let array = lookUp(project).toDo;
+                        document.querySelector('.form').reset()
                         openTaskModal();
-                        buttons.projectTaskBtn.addEventListener('click', () => {
-                            let task = newTask(inputs.task.value, inputs.note.value, inputs.date.value)
-                            //push task to obj array and update local storage
+                        buttons.projectTaskBtn.addEventListener('click', (e) => {//Button click passes new data to local storage
+                            let task = newTask(inputs.task.value, inputs.note.value, inputs.date.value);
+                            array.push(task);
+                            target.toDo = array;
+                            projects.splice(index, 1, target);
+                            localStorage.setItem('projects', JSON.stringify(projects));
+                            tasksModal.style.display = 'none';
+                            removeAllCards();
+                            lookUp(project).toDo.forEach(task => display.append(objCard(task)))
                         })
                     })
     }else return
