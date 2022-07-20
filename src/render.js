@@ -103,6 +103,7 @@ const removeAllCards = () => {//removes cards appended to display
     while (display.firstChild) {
         display.removeChild(display.lastChild)
     }
+
 }
 
 const appendCards = () => {//appends task cards
@@ -151,14 +152,15 @@ const renderProjectToDo = () => {
             buttons.newTaskBtn.style.display = 'none'; //Hide new misc task button
             buttons.newProjectTaskBtn.style.display = 'inline' //Show new project task button
                 document.querySelector('.buttons').append(buttons.newProjectTaskBtn);
+                editProTask(project)
                 buttons.newProjectTaskBtn.addEventListener('click', () => {
                         let projects = JSON.parse(localStorage.getItem('projects'));
                         let index = projects.findIndex(item => item.title == project);
                         let target = projects[index];
                         let array = lookUp(project).toDo;
-                        document.querySelector('.form').reset()
-                        openTaskModal();
-                        buttons.projectTaskBtn.addEventListener('click', (e) => {//Button click passes new data to local storage
+                        
+                        openTaskModal('newProjectTask');
+                        buttons.projectTaskBtn.addEventListener('click', () => {//Button click passes new data to local storage
                             let task = newTask(inputs.task.value, inputs.note.value, inputs.date.value);
                             array.push(task);
                             target.toDo = array;
@@ -166,19 +168,61 @@ const renderProjectToDo = () => {
                             localStorage.setItem('projects', JSON.stringify(projects));
                             tasksModal.style.display = 'none';
                             removeAllCards();
-                            lookUp(project).toDo.forEach(task => display.append(objCard(task)))
+                            lookUp(project).toDo.forEach(task => display.append(objCard(task)));
+                        
                         })
                     })
     }else return
     }))
 }
 
-function openTaskModal(){
+function editProTask(input){//Edit the projects to do array items (tasks)
+    const editBtns = document.querySelectorAll('.editBtn');
+    editBtns.forEach(button => button.addEventListener('click', (e) => {//Adds clicker to edit btns on task cards
+        let taskName = e.target.parentElement.parentElement.children[0].children[0].textContent;
+        let project = lookUp(input);
+        let array = project.toDo;
+        let index = array.findIndex(item => item.title == taskName)
+        openTaskModal('editProjectTask');
+        document.querySelector('.updateProjectTask').addEventListener('click', (e) => {//Update button
+            e.preventDefault()
+            let task = newTask(inputs.task.value, inputs.note.value, inputs.date.value);
+            array.splice(index, 1, task);
+            project.toDo = array;
+            let oldData = JSON.parse(localStorage.getItem('projects'));
+            let projectIndex = oldData.findIndex(item => item.title == input);
+            oldData.splice(projectIndex, 1, project);
+            localStorage.setItem('projects', JSON.stringify(oldData));
+            tasksModal.style.display = 'none';
+                            removeAllCards();
+                            lookUp(input).toDo.forEach(task => display.append(objCard(task)));
+        })
+    }))
+}
+
+function openTaskModal(input){
+    if (input == 'editProjectTask') {
+        tasksModal.style.display = 'block';
+        document.querySelector('.updateProjectTask').style.display = 'inline';
+        document.getElementById('miscTask').style.display = 'none';
+        document.querySelector('.updateTask').style.display = 'none';
+        document.getElementById('projectTask').style.display = 'none'
+        document.querySelector('.form').reset();
+    closeModal()
+    }else if (input == 'newProjectTask') {
+        tasksModal.style.display = 'block';
+        document.querySelector('.updateProjectTask').style.display = 'none';
+        document.getElementById('miscTask').style.display = 'none';
+        document.querySelector('.updateTask').style.display = 'none';
+        document.getElementById('projectTask').style.display = 'inline'
+        document.querySelector('.form').reset();
+    }else {
     tasksModal.style.display = 'block';
     document.getElementById('miscTask').style.display = 'none';
     document.querySelector('.updateTask').style.display = 'none';
     document.querySelector('.updateProjectTask').style.display = 'none';
-    closeModal()
+    document.querySelector('.form').reset()
+    closeModal()}
 }
 
 //Open project edit modal
@@ -195,6 +239,7 @@ const openProjectModal = () => {
     document.querySelector('.projects').style.display = 'block';
     document.querySelector('.updateProject').style.display = 'none';
     document.querySelector('.submitProject').style.display = 'inline-block'
+    document.querySelector('.form').reset()
     document.querySelector('.submitProject').addEventListener('click', () => {
         document.querySelector('.projects').style.display = 'none';
     })
@@ -254,7 +299,6 @@ function defineCard(e){//Returns project title string
 buttons.newProjectBtn.addEventListener('click', () => {
     openProjectModal();
     closeModal();
-    document.querySelector('.form').reset()
 })
 
 
