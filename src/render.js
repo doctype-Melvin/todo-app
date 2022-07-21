@@ -23,7 +23,7 @@ const buttons = (() => {
     const newProjectBtn = document.querySelector('.newProject');
     const updateProject = document.querySelector('.updateProject');
     let newProjectTaskBtn = createElement('button', 'addProjectTask');
-        newProjectTaskBtn.textContent = 'New Project Task'
+        newProjectTaskBtn.textContent = 'New Project Task';
 
 return {
     miscTaskBtn,
@@ -236,8 +236,26 @@ addNewTask.addEventListener('click', (e) => {
 function editMiscTask(){
     let editBtns = document.querySelectorAll('.editBtn');
     let deleteBtn = document.querySelectorAll('.removeBtn');
-    editBtns.forEach(btn => btn.addEventListener('click', () => {
-        console.log('Edit task')
+    editBtns.forEach(btn => btn.addEventListener('click', (e) => {
+        let title = e.target.parentElement.parentElement.children[0].children[0].textContent;
+        let array = JSON.parse(localStorage.getItem('tasks'));
+        let index = array.findIndex(item => item.title == title);
+        openTaskModal('updateTask');
+        document.querySelector('.updateTask').addEventListener('click', (e) => {
+            e.preventDefault();
+            let newObj = {};
+            newObj.title = inputs.task.value;
+            newObj.note = inputs.note.value;
+            newObj.date =  inputs.date.value;
+            console.log(newObj)
+            array.splice(index, 1, newObj);
+            localStorage.setItem('tasks', JSON.stringify(array));
+            removeAllCards();
+            appendCards();
+            editMiscTask();
+            tasksModal.style.display = 'none';
+        })
+        
     }))
     deleteBtn.forEach(btn => btn.addEventListener('click', (e) => {
         let title = e.target.parentElement.parentElement.children[0].children[0].textContent;
@@ -268,6 +286,14 @@ function openTaskModal(input){
         document.getElementById('projectTask').style.display = 'inline'
         document.querySelector('.form').reset();
         closeModal()
+    }else if (input == 'updateTask') {
+    tasksModal.style.display = 'block';
+    document.querySelector('.updateTask').style.display = 'inline'
+    document.getElementById('miscTask').style.display = 'none';
+    document.querySelector('.updateProjectTask').style.display = 'none';
+    document.getElementById('projectTask').style.display = 'none'
+    document.querySelector('.form').reset()
+    closeModal()
     }else {
     tasksModal.style.display = 'block';
     document.getElementById('miscTask').style.display = 'inline';
@@ -275,7 +301,8 @@ function openTaskModal(input){
     document.querySelector('.updateProjectTask').style.display = 'none';
     document.getElementById('projectTask').style.display = 'none'
     document.querySelector('.form').reset()
-    closeModal()}
+    closeModal()
+}
 }
 
 //Open project edit modal
