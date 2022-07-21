@@ -59,6 +59,8 @@ buttons.miscTaskBtn.addEventListener('click', (e) => {
     taskData(inputs.task.value, inputs.note.value, inputs.date.value);
     removeAllCards();
     appendCards();
+    tasksModal.style.display = 'none';
+    editMiscTask()
 });
 
 //Add project task
@@ -112,7 +114,6 @@ const appendCards = () => {//appends task cards
         display.append(objCard(item, false))
     })
 }
-
 
 const appendProjects = () => {//appends project cards
     JSON.parse(localStorage.getItem('projects'))
@@ -226,6 +227,30 @@ function deleteProTask(input){
     }))
 }
 
+const addNewTask = document.querySelector('.newTask');
+addNewTask.addEventListener('click', (e) => {
+    e.preventDefault();
+    openTaskModal();
+})
+
+function editMiscTask(){
+    let editBtns = document.querySelectorAll('.editBtn');
+    let deleteBtn = document.querySelectorAll('.removeBtn');
+    editBtns.forEach(btn => btn.addEventListener('click', () => {
+        console.log('Edit task')
+    }))
+    deleteBtn.forEach(btn => btn.addEventListener('click', (e) => {
+        let title = e.target.parentElement.parentElement.children[0].children[0].textContent;
+        let array = JSON.parse(localStorage.getItem('tasks'));
+        let index = array.findIndex(item => item.title == title);
+        array.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(array));
+        removeAllCards();
+        appendCards();
+        editMiscTask()
+    }))
+}
+
 function openTaskModal(input){
     if (input == 'editProjectTask') {
         tasksModal.style.display = 'block';
@@ -242,11 +267,13 @@ function openTaskModal(input){
         document.querySelector('.updateTask').style.display = 'none';
         document.getElementById('projectTask').style.display = 'inline'
         document.querySelector('.form').reset();
+        closeModal()
     }else {
     tasksModal.style.display = 'block';
-    document.getElementById('miscTask').style.display = 'none';
+    document.getElementById('miscTask').style.display = 'inline';
     document.querySelector('.updateTask').style.display = 'none';
     document.querySelector('.updateProjectTask').style.display = 'none';
+    document.getElementById('projectTask').style.display = 'none'
     document.querySelector('.form').reset()
     closeModal()}
 }
@@ -337,3 +364,4 @@ buttons.projectBtn.addEventListener('click', (e) => {
 
 window.onload = appendCards();
 window.onload = renderProjectToDo();
+window.onload = editMiscTask()
