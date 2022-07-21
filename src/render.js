@@ -94,7 +94,9 @@ const objCard = (task, flag) => {//creates cards with task details from local st
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
         let remove = createElement('button', 'removeBtn');
+        //let done = createElement('button', 'doneBtn')
         edit.textContent = 'Edit';
+        //done.textContent = 'Done';
         remove.textContent = 'Delete';
         buttons.append(edit, remove)
         cardDetails.append(title, note, date, project)
@@ -124,10 +126,12 @@ function refreshProjects(){//Reloads all cards
     removeAllCards();
     appendProjects();
     renderProjectToDo();
-    editProject()
+    editProject();
 }
 
-//Buttons to toggle view in GUI
+
+
+//Buttons to toggle view in GUI (All projects, all misc tasks)
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects
     refreshProjects();
     buttons.newProjectBtn.style.display = 'inline';
@@ -140,6 +144,7 @@ document.querySelector('.viewAllTasks').addEventListener('click', () => {//rende
     appendCards();
     renderProjectToDo();
     editMiscTask()
+
 })
 
 //Makes card title clickable and shows the project's to do list
@@ -155,8 +160,9 @@ const renderProjectToDo = () => {
             buttons.newTaskBtn.style.display = 'none'; //Hide new misc task button
             buttons.newProjectTaskBtn.style.display = 'inline' //Show new project task button
                 document.querySelector('.buttons').append(buttons.newProjectTaskBtn);
-                editProTask(project)
-                deleteProTask(project)
+                editProTask(project);
+                deleteProTask(project);
+                
                 buttons.newProjectTaskBtn.addEventListener('click', () => {
                         let projects = JSON.parse(localStorage.getItem('projects'));
                         let index = projects.findIndex(item => item.title == project);
@@ -174,13 +180,14 @@ const renderProjectToDo = () => {
                             removeAllCards();
                             lookUp(project).toDo.forEach(task => display.append(objCard(task)));
                             editProTask(project);
-                            deleteProTask(project)
+                            deleteProTask(project);
                         })
                     })
     }else return
     }))
 }
 
+//Edits project tasks
 function editProTask(input){//Edit the projects to do array items (tasks)
     const editBtns = document.querySelectorAll('.editBtn');
     editBtns.forEach(button => button.addEventListener('click', (e) => {//Adds clicker to edit btns on task cards
@@ -202,11 +209,12 @@ function editProTask(input){//Edit the projects to do array items (tasks)
                             removeAllCards();
                             lookUp(input).toDo.forEach(task => display.append(objCard(task)));
                             editProTask(input);
-                            deleteProTask(input)
+                            deleteProTask(input);
         })
     }))
 }
 
+//Deletes project tasks
 function deleteProTask(input){
     const deleteBtns = document.querySelectorAll('.removeBtn');
     deleteBtns.forEach(btn => btn.addEventListener('click', (e) => {
@@ -225,16 +233,18 @@ function deleteProTask(input){
         lookUp(input).toDo.forEach(task => display.append(objCard(task)));
         editProTask(input)
         deleteProTask(input)
-        e.preventDefault()
+        e.preventDefault();
     }))
 }
 
+//Button opens task modal
 const addNewTask = document.querySelector('.newTask');
 addNewTask.addEventListener('click', (e) => {
     e.preventDefault();
     openTaskModal();
 })
 
+//Edits and deletes misc tasks
 function editMiscTask(){
     let editBtns = document.querySelectorAll('.editBtn');
     let deleteBtn = document.querySelectorAll('.removeBtn');
@@ -267,10 +277,11 @@ function editMiscTask(){
         localStorage.setItem('tasks', JSON.stringify(array));
         removeAllCards();
         appendCards();
-        editMiscTask()
+        editMiscTask();
     }))
 }
 
+//Open task modal
 function openTaskModal(input){
     if (input == 'editProjectTask') {
         tasksModal.style.display = 'block';
@@ -393,4 +404,4 @@ buttons.projectBtn.addEventListener('click', (e) => {
 
 window.onload = appendCards();
 window.onload = renderProjectToDo();
-window.onload = editMiscTask()
+window.onload = editMiscTask();
