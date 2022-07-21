@@ -153,6 +153,7 @@ const renderProjectToDo = () => {
             buttons.newProjectTaskBtn.style.display = 'inline' //Show new project task button
                 document.querySelector('.buttons').append(buttons.newProjectTaskBtn);
                 editProTask(project)
+                deleteProTask(project)
                 buttons.newProjectTaskBtn.addEventListener('click', () => {
                         let projects = JSON.parse(localStorage.getItem('projects'));
                         let index = projects.findIndex(item => item.title == project);
@@ -170,6 +171,7 @@ const renderProjectToDo = () => {
                             removeAllCards();
                             lookUp(project).toDo.forEach(task => display.append(objCard(task)));
                             editProTask(project);
+                            deleteProTask(project)
                         })
                     })
     }else return
@@ -197,7 +199,30 @@ function editProTask(input){//Edit the projects to do array items (tasks)
                             removeAllCards();
                             lookUp(input).toDo.forEach(task => display.append(objCard(task)));
                             editProTask(input);
+                            deleteProTask(input)
         })
+    }))
+}
+
+function deleteProTask(input){
+    const deleteBtns = document.querySelectorAll('.removeBtn');
+    deleteBtns.forEach(btn => btn.addEventListener('click', (e) => {
+        let taskName = e.target.parentElement.parentElement.children[0].children[0].textContent;
+        let project = lookUp(input);
+        let array = project.toDo;
+        let index = array.findIndex(item => item.title == taskName);
+        array.splice(index, 1);
+        project.toDo = array;
+        console.log(array)
+        let oldData = JSON.parse(localStorage.getItem('projects'));
+        let projectIndex = oldData.findIndex(item => item.title == input);
+        oldData.splice(projectIndex, 1, project);
+        localStorage.setItem('projects', JSON.stringify(oldData));
+        removeAllCards();
+        lookUp(input).toDo.forEach(task => display.append(objCard(task)));
+        editProTask(input)
+        deleteProTask(input)
+        e.preventDefault()
     }))
 }
 
@@ -263,7 +288,6 @@ function editProject(){
                 let projectName = defineCard(e); //Gets project title
                 let obj = data.filter(item => item.title == projectName); 
                 let index = data.findIndex(obj => obj.title == projectName);
-                console.log(projectName, data, obj[0], index)
                 openProjectModalEdit();
                 updateProjectBtn.addEventListener('click', (e) => {
                     e.preventDefault();
