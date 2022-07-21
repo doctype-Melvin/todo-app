@@ -169,7 +169,7 @@ const renderProjectToDo = () => {
                             tasksModal.style.display = 'none';
                             removeAllCards();
                             lookUp(project).toDo.forEach(task => display.append(objCard(task)));
-                        
+                            editProTask(project);
                         })
                     })
     }else return
@@ -196,6 +196,7 @@ function editProTask(input){//Edit the projects to do array items (tasks)
             tasksModal.style.display = 'none';
                             removeAllCards();
                             lookUp(input).toDo.forEach(task => display.append(objCard(task)));
+                            editProTask(input);
         })
     }))
 }
