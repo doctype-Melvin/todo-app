@@ -60,7 +60,8 @@ buttons.miscTaskBtn.addEventListener('click', (e) => {
     removeAllCards();
     appendCards();
     tasksModal.style.display = 'none';
-    editMiscTask()
+    editMiscTask();
+
 });
 
 //Add project task
@@ -138,6 +139,7 @@ document.querySelector('.viewAllTasks').addEventListener('click', () => {//rende
     removeAllCards();
     appendCards();
     renderProjectToDo();
+    editMiscTask()
 })
 
 //Makes card title clickable and shows the project's to do list
