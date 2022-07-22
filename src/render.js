@@ -90,7 +90,7 @@ const objCard = (task, flag) => {//creates cards with task details from local st
     title.textContent = task.title;
     note.textContent = task.note || task.description;
     date.textContent = task.date;
-    project.style.visibility = 'hidden';
+    project.style.display = 'none';
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
         let remove = createElement('button', 'removeBtn');
@@ -129,7 +129,22 @@ function refreshProjects(){//Reloads all cards
     editProject();
 }
 
+//Sidebar control
+function openSidebar() {
+    document.querySelector('.sidebar').style.width = '200px';
+    document.querySelector('.display').style.marginLeft = '200px';
+}
 
+function closeSidebar() {
+    document.querySelector('.sidebar').style.width = '0';
+    document.querySelector('.display').style.marginLeft = '0';
+}
+document.querySelector('.menu').addEventListener('click', () => {
+    openSidebar()
+})
+document.querySelector('.closeBtn').addEventListener('click', () => {
+    closeSidebar()
+})
 
 //Buttons to toggle view in GUI (All projects, all misc tasks)
 document.querySelector('.viewAllProjects').addEventListener('click', () => {//renders all projects

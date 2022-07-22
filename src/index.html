@@ -4,50 +4,54 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get It Done</title>
+    <title>Get It Done ✓</title>
 </head>
 <body>
     <div class="wrapper">
         <div class="input">
             <form class="form">
                 <div class="tasks">
-                    <fieldset>
-                        <label for="task">Task
-                            <input type="text" name="task" id="task" class="task">
-                        </label>
-                        <label for="note">Note
-                            <input type="text" name="note"  id="note" class="note">
-                        </label>
-                        <label for="date">Date
-                            <input type="date" name="date" id="date" class="date">
-                        </label>
-                        <button class="submitTask" id="miscTask">Add Task</button>
-                        <button class="submitTask" id="projectTask">Add Project Task</button>
-                        <button class="updateTask">Update Task</button>
-                        <button class="updateProjectTask">Update Task</button>
-                    </fieldset>
+                        <fieldset>
+                            <label for="task">Task
+                                <input type="text" name="task" id="task" class="task">
+                            </label>
+                            <label for="note">Note
+                                <input type="text" name="note"  id="note" class="note">
+                            </label>
+                            <label for="date">Date
+                                <input type="date" name="date" id="date" class="date">
+                            </label>
+                            <button class="submitTask" id="miscTask">Add Task</button>
+                            <button class="submitTask" id="projectTask">Add Project Task</button>
+                            <button class="updateTask">Update Task</button>
+                            <button class="updateProjectTask">Update Task</button>
+                        </fieldset>
                 </div>
                 <div class="projects">
-                    <fieldset>
-                        <label for="title">Title
-                            <input type="text" name="title" id="title" class="title">
-                        </label>
-                        <label for="description">Description
-                            <input type="text" name="description" id="description" class="description">
-                        </label>
-                        <button class="submitProject">Add Project</button>
-                        <button class="updateProject">Update Project</button>
-                    </fieldset>
+                        <fieldset>
+                            <label for="title">Title
+                                <input type="text" name="title" id="title" class="title">
+                            </label>
+                            <label for="description">Description
+                                <input type="text" name="description" id="description" class="description">
+                            </label>
+                            <button class="submitProject">Add Project</button>
+                            <button class="updateProject">Update Project</button>
+                        </fieldset>
                 </div>
             </form>
         </div>
         <div class="menu"></div>
-        <div class="buttons">
-            <button class="newTask">New Task</button>
-            <button class="newProject">New Project</button>
-            <button class="viewAllProjects">All Projects</button>
-            <button class="viewAllTasks">All Misc Tasks</button>
+        <div class="sidebar">
+            <div class="closeBtn">&times;</div>
+            <div class="projectsOverview">Projects</div>
         </div>
+            <div class="buttons">
+                <button class="newTask">New Task</button>
+                <button class="newProject">New Project</button>
+                <button class="viewAllProjects">All Projects</button>
+                <button class="viewAllTasks">All Misc Tasks</button>
+            </div>
         <div class="display">
         </div>
     </div>
