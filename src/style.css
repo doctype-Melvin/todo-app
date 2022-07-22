@@ -2,11 +2,11 @@
     box-sizing: border-box;
 }
 :root {
-    --main-color: #2978A0;
-    --lighter-shade: #aeecef;
-    --darker-shade: #02182B;
-    --contrast-1: #7F5A83;
-    --contrast-2: #A188A6;
+    --main-color: #67E0A3;
+    --lighter-shade-1: #7CF0BD;
+    --lighter-shade-2: #AFF9C9;
+    --darker-shade-1: #317B22;
+    --darker-shade-2: #2A4D14;
 }
 
 html, body {
@@ -16,24 +16,24 @@ html, body {
 }
 
 button {
-    background-color: var(--contrast-2);
-    color: var(--darker-shade);
+    background-color: var(--main-color);
+    color: white;
     padding: 5px 10px;
-    border: solid 1px var(--contrast-2);
+    border: solid 1px var(--main-color);
     border-radius: 5px;
     font-size: 0.95rem;
 }
 
 button:hover {
     cursor: pointer;
-    background-color: var(--contrast-2);
-    color: white;
-    border: solid 1px var(--contrast-2);
+    background-color: var(--lighter-shade-1);
+    color: var(--darker-shade-2);
+    border: solid 1px var(--lighter-shade-1);
 }
 
 button:active {
-    background-color: var(--contrast-1);
-    color: var(--darker-shade);
+    background-color: var(--darker-shade-2);
+    color: var(--lighter-shade-2);
 }
 
 .display {
@@ -41,7 +41,7 @@ button:active {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 100vw));
     grid-template-rows: repeat(auto-fill, minmax(100px, 120px));
-    gap: 15px;
+    gap: 5px;
 }
 
 .cardTitle:hover {
@@ -71,6 +71,9 @@ button:active {
     font-weight: 600;
 }
 
+.cardTitle:hover {
+    color: var(--darker-shade-2);
+}
 .cardNote{
     font-size: 1.1rem;
 }
@@ -166,4 +169,20 @@ label {
 
 .buttons button {
     margin: 5px 5px
+}
+
+@media only screen and (min-width: 400px) {
+    .cardTitle {
+        width: 250px;
+    }
+    .cardNote {
+        width: 200px;
+        
+    }
+    .cardDetails {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 65vw;
+    }
 }

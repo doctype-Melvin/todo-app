@@ -97,7 +97,7 @@ const objCard = (task, flag) => {//creates cards with task details from local st
         //let done = createElement('button', 'doneBtn')
         edit.textContent = 'Edit';
         //done.textContent = 'Done';
-        remove.textContent = 'Delete';
+        remove.textContent = 'Done';
         buttons.append(edit, remove)
         cardDetails.append(title, note, date, project)
     card.append(cardDetails, buttons);
