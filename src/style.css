@@ -39,8 +39,8 @@ button:active {
 .display {
     height: 100vh;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
-    grid-template-rows: repeat(auto-fill, minmax(100px, 175px));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 100vw));
+    grid-template-rows: repeat(auto-fill, minmax(100px, 120px));
     gap: 15px;
 }
 
@@ -56,9 +56,9 @@ button:active {
     box-shadow: 3px 3px 10px rgba(175, 176, 176, 0.52);
     font-size: 1.25rem;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: 3px 5px;
+    align-items: center;
 }
 
 .cardDetails {
@@ -77,7 +77,12 @@ button:active {
 
 .cardButtons {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    height: fit-content;
+}
+
+.cardButtons button {
+    margin-right: 15px;
 }
 
 .tasks, .projects{
