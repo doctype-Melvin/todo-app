@@ -1,5 +1,6 @@
 import { newTask } from "./tasks";
 import { changeTask, createProjectTask, editedProject, editProjectTask, getProject, getProjectDetails, lookUp, newProjectDetails, projectData, pushNewData, removeProject, removeProjectTask, removeTask, replaceObj, showProjectIndex, taskData} from "./update";
+import {formatDistanceToNow} from "date-fns"
 
 //DOM rendering
 taskData //Calls storage fn for the tasks array and creates new task obj
@@ -86,22 +87,36 @@ const objCard = (task, flag) => {//creates cards with task details from local st
     let title = createElement('span', 'cardTitle');
     let note = createElement('span', 'cardNote');
     let date = createElement('span', 'cardDate');
+    //console.log(task.date)
+    
     project.textContent = flag
     title.textContent = task.title;
     note.textContent = task.note || task.description;
-    date.textContent = task.date;
+    let dueDate 
+    if (project.textContent != true){
+        dueDate = rewriteDate(task.date)
+        console.log(dueDate, new Date(dueDate))
+    } else if (project.textContent === true) return
+    date.textContent = formatDistanceToNow(new Date(dueDate)) //RangeError Invalid time value?
     project.style.display = 'none';
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
         let remove = createElement('button', 'removeBtn');
-        //let done = createElement('button', 'doneBtn')
         edit.textContent = 'Edit';
-        //done.textContent = 'Done';
         remove.textContent = 'Done';
         buttons.append(edit, remove)
         cardDetails.append(title, note, date, project)
     card.append(cardDetails, buttons);
     return card
+}
+
+function rewriteDate (date) {
+    if (date !== undefined){
+    let regex = /[^0-9]/g
+    let str = date
+    let newString = str.replace(regex, ', ')
+    return newString
+}else if (date === undefined) return
 }
 
 const removeAllCards = () => {//removes cards appended to display
