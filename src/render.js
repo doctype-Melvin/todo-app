@@ -97,7 +97,7 @@ const objCard = (task, flag) => {//creates cards with task details from local st
         dueDate = rewriteDate(task.date)
         console.log(dueDate, new Date(dueDate))
     } else if (project.textContent === true) return
-    date.textContent = formatDistanceToNow(new Date(dueDate)) //RangeError Invalid time value?
+    //date.textContent = formatDistanceToNow(new Date(dueDate)) //RangeError Invalid time value?
     project.style.display = 'none';
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
