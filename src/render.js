@@ -87,17 +87,16 @@ const objCard = (task, flag) => {//creates cards with task details from local st
     let title = createElement('span', 'cardTitle');
     let note = createElement('span', 'cardNote');
     let date = createElement('span', 'cardDate');
-    //console.log(task.date)
+    let dueDate = rewriteDate(task.date)
     
     project.textContent = flag
     title.textContent = task.title;
     note.textContent = task.note || task.description;
-    let dueDate 
-    if (project.textContent != true){
-        dueDate = rewriteDate(task.date)
-        console.log(dueDate, new Date(dueDate))
-    } else if (project.textContent === true) return
-    //date.textContent = formatDistanceToNow(new Date(dueDate)) //RangeError Invalid time value?
+    date.textContent = new Date(dueDate) 
+    // Show only the time left till due date
+    //date.textContent = formatDistanceToNow(new Date('2022, 12, 25'))
+    console.log(dueDate, date.textContent)
+    
     project.style.display = 'none';
         let buttons = createElement('div', 'cardButtons');
         let edit = createElement('button', 'editBtn');
@@ -113,7 +112,7 @@ const objCard = (task, flag) => {//creates cards with task details from local st
 function rewriteDate (date) {
     if (date !== undefined){
     let regex = /[^0-9]/g
-    let str = date
+    let str = String(date)
     let newString = str.replace(regex, ', ')
     return newString
 }else if (date === undefined) return
